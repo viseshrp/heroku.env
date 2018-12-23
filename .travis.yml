@@ -2,6 +2,7 @@
 
 language: python
 python:
+  - 3.7
   - 3.6
   - 3.5
   - 3.4
@@ -25,5 +26,5 @@ deploy:
     secure: PLEASE_REPLACE_ME
   on:
     tags: true
-    repo: viseshrp/heroku_env
-    python: 3.6
+    repo: viseshrp/heroku.env
+    python: 3.7
