@@ -36,7 +36,7 @@ setup(
     description="CLI tool to load heroku env vars from local .env files",
     entry_points={
         'console_scripts': [
-            'heroku_env=heroku_env.cli:main',
+            'heroku_env=heroku_env.__main__:main',
         ],
     },
     install_requires=requirements,
