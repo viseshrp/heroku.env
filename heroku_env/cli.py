@@ -6,7 +6,10 @@ from __future__ import unicode_literals  # unicode support for py2
 
 import os
 import sys
+
 import click
+
+from .param_types import APIKeyParamType
 from .heroku_env import upload_env
 
 
@@ -34,7 +37,7 @@ from .heroku_env import upload_env
     hide_input=True,
     confirmation_prompt=True,
     required=True,
-    type=str,
+    type=APIKeyParamType(),
     envvar="HEROKU_API_KEY",
     help="Your Heroku API key"
 )
