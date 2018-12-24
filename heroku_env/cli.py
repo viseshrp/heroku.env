@@ -21,7 +21,6 @@ from .heroku_env import upload_env
 @click.option(
     '-e',
     '--env-file',
-    type=str,
     default=".env",
     show_default=True,
     help="Path to the .env file"
@@ -29,11 +28,12 @@ from .heroku_env import upload_env
 @click.option(
     '-k',
     '--api-key',
-    prompt=True,
+    prompt="Please enter the Heroku API key to continue",
     hide_input=True,
     confirmation_prompt=True,
     required=True,
     type=str,
+    envvar="HEROKU_API_KEY",
     help="Your Heroku API key"
 )
 def main(app, env_file, api_key):
@@ -44,11 +44,11 @@ def main(app, env_file, api_key):
 
     1. Python 2.7+
 
-    2. Heroku CLI installed.
+    2. Heroku Toolbelt/CLI installed.
 
     3. A valid Heroku app name is required to run against.
 
-    4. The absolute path to the .env file is also needed, but if not provided,
+    4. The absolute/relative path to the .env file is also needed, but if not provided,
     ".env" will be used as the default, which expects a file named .env to be present
     in the current working directory.
 
@@ -67,10 +67,14 @@ def main(app, env_file, api_key):
 
     heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
     """
-    os.environ['HEROKU_API_KEY'] = api_key
+    # if not defined, then set it.
+    if not os.getenv('HEROKU_API_KEY'):
+        os.environ['HEROKU_API_KEY'] = api_key
     try:
-        upload_env(app, env_file)
+        print(env_file)
+        # upload_env(app, env_file)
     except Exception as e:
+        # todo
         raise e
     return 0
 
