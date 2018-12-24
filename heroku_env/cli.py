@@ -21,6 +21,8 @@ from .heroku_env import upload_env
 @click.option(
     '-e',
     '--env-file',
+    type=click.Path(exists=True, file_okay=True, dir_okay=False,
+                    readable=True, resolve_path=True, allow_dash=False),
     default=".env",
     show_default=True,
     help="Path to the .env file"
