@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use heroku_env in a project::
+To use heroku.env in a project::
 
     import heroku_env

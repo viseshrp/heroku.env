@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Console script for heroku_env."""
+"""Console script for heroku.env"""
 
 from __future__ import unicode_literals  # unicode support for py2
 

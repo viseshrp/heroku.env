@@ -1,4 +1,4 @@
-Welcome to heroku_env's documentation!
+Welcome to heroku.env's documentation!
 ======================================
 
 .. toctree::
