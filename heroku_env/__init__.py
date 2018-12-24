@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Top-level package for heroku_env."""
+"""Top-level package for heroku.env"""
 
 __author__ = """Visesh Prasad"""
 __email__ = 'viseshrprasad@gmail.com'

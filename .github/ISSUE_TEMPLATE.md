@@ -1,4 +1,4 @@
-* heroku_env version:
+* heroku.env version:
 * Python version:
 * Operating System:
 

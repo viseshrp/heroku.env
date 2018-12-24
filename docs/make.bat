@@ -9,7 +9,7 @@ if "%SPHINXBUILD%" == "" (
 )
 set SOURCEDIR=.
 set BUILDDIR=_build
-set SPHINXPROJ=heroku_env
+set SPHINXPROJ=heroku.env
 
 if "%1" == "" goto help
 

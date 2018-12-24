@@ -4,7 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = python -msphinx
-SPHINXPROJ    = heroku_env
+SPHINXPROJ    = heroku.env
 SOURCEDIR     = .
 BUILDDIR      = _build
 
