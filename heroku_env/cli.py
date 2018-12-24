@@ -16,8 +16,6 @@ from .heroku_env import upload_env
     '--app',
     required=True,
     type=str,
-    # default="swimming-briskly-123",
-    # show_default=True,
     help="The name of the heroku app."
 )
 @click.option(
@@ -36,12 +34,39 @@ from .heroku_env import upload_env
     confirmation_prompt=True,
     required=True,
     type=str,
-    # default="a1b12c24-ab1d-123f-5678-1234b12a0a1b",
-    # show_default=True,
     help="Your Heroku API key"
 )
 def main(app, env_file, api_key):
-    """Simple CLI tool to load Heroku environment variables from a .env file"""
+    """
+    Simple CLI tool to upload environment variables to Heroku from a .env file.
+
+    Requirements:
+
+    1. Python 2.7+
+
+    2. Heroku CLI installed.
+
+    3. A valid Heroku app name is required to run against.
+
+    4. The absolute path to the .env file is also needed, but if not provided,
+    ".env" will be used as the default, which expects a file named .env to be present
+    in the current working directory.
+
+    5. Your Heroku API key is also mandatory, which can be set as an environment
+    variable(as HEROKU_API_KEY) or passed with --api-key or -k.
+
+    If not set, you will be given a password-type prompt to enter it.
+
+    It is recommended for security purposes that you set it as an environment variable like this:
+
+    export HEROKU_API_KEY=a1b12c24-ab1d-123f-5678-1234b12a0a1b
+
+    Example usages:
+
+    heroku.env --app swimming-briskly-123 --env-file dot.env
+
+    heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
+    """
     os.environ['HEROKU_API_KEY'] = api_key
     try:
         upload_env(app, env_file)
