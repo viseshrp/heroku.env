@@ -21,6 +21,15 @@ Simple CLI tool to upload environment variables to Heroku from a .env file.
 * Free software: MIT license
 * Documentation: https://heroku-env.readthedocs.io.
 
+Disclaimer
+----------
+
+I'm a beginner when it comes to Python libraries. I've been working on Django for over a year
+and that encompasses all my experience with Python. This library was a quick personal project
+because we use Heroku a lot at work and I find it really annoying when you have to add env vars
+manually from your local environment every time. This is also my first venture into open source
+Python and my very first library on PyPI. If you're a rockstar dev reading this, I cannot be happier
+and I cannot tell you how much your feedback would mean to me :) Thanks.
 
 Installation
 ------------
