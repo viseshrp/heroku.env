@@ -35,13 +35,15 @@ Requirements
 #. `Heroku CLI`_ (Toolbelt) installed.
 #. A valid Heroku app name is required to run against.
 #. The absolute/relative path to the .env file is also needed, but if not provided, ".env" will be used as the default, which expects a file named .env to be present in the current working directory.
-#. Your Heroku API key (found `here`_ or by running `this`_) is also mandatory, which can be set as an environment variable (as `HEROKU_API_KEY` **before** running the tool) or passed with --api-key or -k.
+#. Your Heroku API key (found `here`_ or by running `this`_) is also mandatory, which must be set as an environment variable (as `HEROKU_API_KEY` **before** running the tool) or passed with --api-key or -k.
 
 
 Usage
 -----
 
-If your API key is not set, you will be given a password-type prompt to enter it.
+If the API key is set as an environment variable, it will be automatically read.
+
+If it is not set, you will be given a password-type prompt to enter it.
 
 It is recommended for security purposes that you set it as an environment variable before running the tool, like this:
 
@@ -65,7 +67,8 @@ See all options by:
 Features
 --------
 
-* TODO
+* Auto-setting of all env vars from a .env file
+* Lines starting with # are considered comments and ignored
 
 Credits
 -------

@@ -77,10 +77,10 @@ def main(app, env_file, api_key):
         os.environ['HEROKU_API_KEY'] = api_key
     try:
         print(env_file)
-        # upload_env(app, env_file)
+        upload_env(app, env_file)
     except Exception as e:
-        # todo
-        raise e
+        raise click.ClickException(e)
+
     return 0
 
 
