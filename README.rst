@@ -34,30 +34,24 @@ Requirements
 If your API key is not set, you will be given a password-type prompt to enter it.
 
 It is recommended for security purposes that you set it as an environment variable before running the tool, like this:
-* Simple command line usage:
 
-    .. code-block:: bash
-        $ export HEROKU_API_KEY=a1b12c24-ab1d-123f-5678-1234b12a0a1b
+``$ export HEROKU_API_KEY=a1b12c24-ab1d-123f-5678-1234b12a0a1b``
 
 Example usages:
 
 This is perfect.
 
-    .. code-block:: bash
-        $ heroku.env --app swimming-briskly-123 --env-file dot.env
+``$ heroku.env --app swimming-briskly-123 --env-file dot.env``
 
-This is **not** recommended.
+This is **not** recommended, but still available as an option.
 
-    .. code-block:: bash
-        $ heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
+``$ heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b``
 
 
 Installation
 ------------
 
-```
-pip install heroku.env
-```
+``pip install heroku.env``
 
 
 Features
