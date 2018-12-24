@@ -78,6 +78,8 @@ def main(app, env_file, api_key):
     try:
         print(env_file)
         upload_env(app, env_file)
+    except IndexError:
+        raise click.ClickException("Env vars in the .env file must be of the form key=value")
     except Exception as e:
         raise click.ClickException(e)
 
