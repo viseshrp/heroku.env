@@ -6,8 +6,11 @@ from __future__ import unicode_literals  # unicode support for py2
 
 import os
 import sys
+
 import click
+
 from .heroku_env import upload_env
+from .param_types import APIKeyParamType
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
@@ -21,7 +24,8 @@ from .heroku_env import upload_env
 @click.option(
     '-e',
     '--env-file',
-    type=str,
+    type=click.Path(exists=True, file_okay=True, dir_okay=False,
+                    readable=True, resolve_path=True, allow_dash=False),
     default=".env",
     show_default=True,
     help="Path to the .env file"
@@ -29,35 +33,20 @@ from .heroku_env import upload_env
 @click.option(
     '-k',
     '--api-key',
-    prompt=True,
+    prompt="Please enter the Heroku API key to continue",
     hide_input=True,
     confirmation_prompt=True,
     required=True,
-    type=str,
+    type=APIKeyParamType(),
+    envvar="HEROKU_API_KEY",
     help="Your Heroku API key"
 )
 def main(app, env_file, api_key):
     """
-    Simple CLI tool to upload environment variables to Heroku from a .env file.
+    Simple CLI tool to upload environment variables to Heroku from a .env file,
+    through the Heroku CLI Toolbelt.
 
-    Requirements:
-
-    1. Python 2.7+
-
-    2. Heroku CLI installed.
-
-    3. A valid Heroku app name is required to run against.
-
-    4. The absolute path to the .env file is also needed, but if not provided,
-    ".env" will be used as the default, which expects a file named .env to be present
-    in the current working directory.
-
-    5. Your Heroku API key is also mandatory, which can be set as an environment
-    variable(as HEROKU_API_KEY) or passed with --api-key or -k.
-
-    If not set, you will be given a password-type prompt to enter it.
-
-    It is recommended for security purposes that you set it as an environment variable like this:
+    It is recommended for security purposes that you set API key as an environment variable like this:
 
     export HEROKU_API_KEY=a1b12c24-ab1d-123f-5678-1234b12a0a1b
 
@@ -67,12 +56,13 @@ def main(app, env_file, api_key):
 
     heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
     """
-    os.environ['HEROKU_API_KEY'] = api_key
+    # if not defined, then set it.
+    if not os.getenv('HEROKU_API_KEY'):
+        os.environ['HEROKU_API_KEY'] = api_key
     try:
         upload_env(app, env_file)
     except Exception as e:
-        raise e
-    return 0
+        raise click.ClickException(e)
 
 
 if __name__ == "__main__":
