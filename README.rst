@@ -9,7 +9,7 @@ heroku.env
 .. image:: https://img.shields.io/travis/viseshrp/heroku_env.svg
         :target: https://travis-ci.org/viseshrp/heroku.env
 
-.. image:: https://readthedocs.org/projects/heroku-env/badge/?version=latest
+.. image:: https://readthedocs.org/projects/herokuenv/badge/?version=latest
         :target: https://herokuenv.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
