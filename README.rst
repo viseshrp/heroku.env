@@ -10,7 +10,7 @@ heroku.env
         :target: https://travis-ci.org/viseshrp/heroku.env
 
 .. image:: https://readthedocs.org/projects/heroku-env/badge/?version=latest
-        :target: https://heroku-env.readthedocs.io/en/latest/?badge=latest
+        :target: https://herokuenv.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
@@ -19,7 +19,7 @@ Simple CLI tool to upload environment variables to Heroku from a .env file, thro
 * GitHub: https://github.com/viseshrp/heroku.env
 * PyPI: https://pypi.python.org/pypi/heroku.env
 * Free software: MIT license
-* Documentation: https://heroku-env.readthedocs.io.
+* Documentation: https://herokuenv.readthedocs.io.
 
 Disclaimer
 ----------
