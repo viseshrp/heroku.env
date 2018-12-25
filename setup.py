@@ -10,7 +10,7 @@ from shutil import rmtree
 from setuptools import setup, find_packages
 
 # Package meta-data.
-version='0.2.0'  # lower case for bumpversion
+version='0.2.1'  # lower case for bumpversion
 NAME = 'heroku.env'
 DESCRIPTION = "CLI tool to load heroku env vars from local .env files"
 URL = 'https://github.com/viseshrp/heroku.env'
