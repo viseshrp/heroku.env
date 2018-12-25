@@ -5,31 +5,27 @@ from __future__ import unicode_literals  # unicode support for py2
 
 import os
 
-
-def split_line(line):
-    return line.strip().split("=", 1)
+import click
 
 
 def set_config_var(name, value, app_name):
-    if name and value:
-        command = 'heroku config:set "' + name + '=' + value + '"' + ' --app ' + app_name
-        os.system(command)
+    command = 'heroku config:set "{}={}" --app {}'.format(name, value, app_name)
+    os.system(command)
 
 
 def upload_env(app_name, env_file):
     with open(env_file) as e:
         for line in e:
-            # avoid comments
-            if not line.startswith("#"):
-                cleaned_line = split_line(line)
-                if len(cleaned_line) > 1:
-                    name = cleaned_line[0]
-                    try:
-                        value = cleaned_line[1]
-                    except IndexError:
-                        # sometimes we upload empty values for vars which is totally fine.
-                        value = ""
-                    # log it
-                    print("*** Setting " + name + " = " + value + " ***")
-                    # set it
-                    set_config_var(name, value, app_name)
+            line = line.strip()
+            # check, avoid comments
+            if "=" in line and not line.startswith("#"):
+                kv_pair = line.split("=", 1)
+                if len(kv_pair) > 1:  # has to at least be of form: k=
+                    key = kv_pair[0]
+                    value = kv_pair[1]
+                    # an empty value is fine
+                    if key:
+                        # set it
+                        set_config_var(key, value, app_name)
+            else:
+                click.echo("Skipping line : either a comment or not of the form key=value")
