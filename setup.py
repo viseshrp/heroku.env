@@ -10,7 +10,7 @@ from shutil import rmtree
 from setuptools import setup, find_packages
 
 # Package meta-data.
-version='0.2.1'  # lower case for bumpversion
+VERSION = '0.2.1'
 NAME = 'heroku.env'
 DESCRIPTION = "CLI tool to load heroku env vars from local .env files"
 URL = 'https://github.com/viseshrp/heroku.env'
@@ -58,7 +58,7 @@ if sys.argv[-1] == 'publish':
     sys.exit()
 
 if sys.argv[-1] == 'tags':
-    os.system("git tag -a {} -m 'version {}'".format(version, version))
+    os.system("git tag -a {} -m 'version {}'".format(VERSION, VERSION))
     os.system("git push --tags")
     sys.exit()
 
@@ -68,7 +68,7 @@ if sys.argv[-1] == 'readme':
 
 setup(
     name=NAME,
-    version=version,
+    version=VERSION,
     description=DESCRIPTION,
     long_description=README + '\n\n' + HISTORY,
     author=AUTHOR,
