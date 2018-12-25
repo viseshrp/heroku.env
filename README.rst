@@ -14,7 +14,7 @@ heroku.env
         :alt: Documentation Status
 
 
-Simple CLI tool to upload environment variables to Heroku from a .env file.
+Simple CLI tool to upload environment variables to Heroku from a .env file, through the Heroku CLI Toolbelt.
 
 * GitHub: https://github.com/viseshrp/heroku.env
 * PyPI: https://pypi.python.org/pypi/heroku.env
@@ -78,6 +78,7 @@ Features
 
 * Auto-setting of all env vars from a .env file
 * Lines starting with # are considered comments and ignored
+* Secure, does not store your API key anywhere.
 
 Credits
 -------
