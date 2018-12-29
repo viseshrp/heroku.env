@@ -5,7 +5,6 @@
 from __future__ import unicode_literals  # unicode support for py2
 
 import os
-import sys
 
 import click
 
@@ -41,7 +40,16 @@ from .param_types import APIKeyParamType
     envvar="HEROKU_API_KEY",
     help="Your Heroku API key"
 )
-def main(app, env_file, api_key):
+@click.option(
+    '-t',
+    '--set-alt',
+    is_flag=True,
+    required=False,
+    help="Flag to enable reading of alternate values of env vars from comments in the env file."
+         " Specify the alternate value to use with 'alt_value=VALUE'"
+         " in the line right before the actual env var you want to change."
+)
+def main(app, env_file, api_key, set_alt):
     """
     Simple CLI tool to upload environment variables to Heroku from a .env file,
     through the Heroku CLI Toolbelt.
@@ -60,10 +68,10 @@ def main(app, env_file, api_key):
     if not os.getenv('HEROKU_API_KEY'):
         os.environ['HEROKU_API_KEY'] = api_key
     try:
-        upload_env(app, env_file)
+        upload_env(app, env_file, set_alt)
     except Exception as e:
         raise click.ClickException(e)
 
 
 if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+    main()  # pragma: no cover
