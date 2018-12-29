@@ -5,7 +5,6 @@
 import io
 import os
 import sys
-from shutil import rmtree
 
 from setuptools import setup, find_packages
 
@@ -26,36 +25,6 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
 
 with io.open('HISTORY.rst', 'r', encoding='utf-8') as history_file:
     HISTORY = history_file.read()
-
-working_dir = os.path.abspath(os.path.dirname(__file__))
-
-# more setup.py subcommands
-if sys.argv[-1] == 'build':
-    print('Removing previous builds...')
-    # remove build dir
-    os.system('{} setup.py clean --all'.format(sys.executable))
-
-    try:
-        rmtree(os.path.join(working_dir, 'dist'))
-        rmtree(os.path.join(working_dir, 'heroku.env.egg-info'))
-    except OSError:
-        pass
-
-    print("Bumping version...")
-    os.system('bumpversion minor')
-
-    print("Reinstalling new version...")
-    os.system('pip install -e .')
-
-    print("Running build...")
-    os.system('{} setup.py sdist bdist_wheel'.format(sys.executable))
-    os.system('tar tzf dist/*.tar.gz')
-
-    sys.exit()
-
-if sys.argv[-1] == 'publish':
-    os.system('twine upload dist/*')
-    sys.exit()
 
 if sys.argv[-1] == 'tags':
     os.system("git tag -a {} -m 'version {}'".format(VERSION, VERSION))
