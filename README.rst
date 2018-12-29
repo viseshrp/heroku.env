@@ -62,7 +62,7 @@ Examples:
 
 Examples:
 
-.. code-block:: bash
+.. code-block:: yaml
 
     # Django settings module
     DJANGO_SETTINGS_MODULE=portfolio.settings
