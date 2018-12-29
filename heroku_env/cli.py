@@ -45,16 +45,18 @@ from .param_types import APIKeyParamType
     '--set-alt',
     is_flag=True,
     required=False,
-    help="Flag to enable reading of alternate values of env vars from comments in the env file."
+    help="Flag to enable reading of alternate values of env vars from"
+         " comments in the env file."
          " Specify the alternate value to use with 'alt_value=VALUE'"
          " in the line right before the actual env var you want to change."
 )
 def main(app, env_file, api_key, set_alt):
     """
-    Simple CLI tool to upload environment variables to Heroku from a .env file,
-    through the Heroku CLI Toolbelt.
+    Simple CLI tool to upload environment variables to
+    Heroku from a .env file, through the Heroku CLI Toolbelt.
 
-    It is recommended for security purposes that you set API key as an environment variable like this:
+    It is recommended for security purposes that you set API
+    key as an environment variable like this:
 
     export HEROKU_API_KEY=a1b12c24-ab1d-123f-5678-1234b12a0a1b
 
@@ -62,7 +64,8 @@ def main(app, env_file, api_key, set_alt):
 
     heroku.env --app swimming-briskly-123 --env-file dot.env
 
-    heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
+    heroku.env --app swimming-briskly-123 --env-file dot.env
+    --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
     """
     # if not defined, then set it.
     if not os.getenv('HEROKU_API_KEY'):

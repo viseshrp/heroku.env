@@ -9,7 +9,9 @@ import click
 
 
 def set_config_var(name, value, app_name):
-    command = 'heroku config:set "{}={}" --app {}'.format(name, value, app_name)
+    command = 'heroku config:set "{}={}" --app {}'.format(
+        name, value, app_name
+    )
     os.system(command)
 
 
