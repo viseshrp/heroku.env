@@ -9,7 +9,7 @@ import sys
 from setuptools import setup, find_packages
 
 # Package meta-data.
-VERSION = '0.2.1'
+VERSION = '0.3.0'
 NAME = 'heroku.env'
 DESCRIPTION = "CLI tool to load heroku env vars from local .env files"
 URL = 'https://github.com/viseshrp/heroku.env'

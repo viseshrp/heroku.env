@@ -89,7 +89,7 @@ local-install:
 release: dist ## package and upload a release
 	twine upload dist/*
 
-dist: clean minor local-install ## builds source and wheel package
+dist: clean ## builds source and wheel package
 	python setup.py sdist
 	python setup.py bdist_wheel
 	ls -l dist
