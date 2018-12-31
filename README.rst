@@ -15,7 +15,7 @@ heroku.env
 
 .. image:: https://pepy.tech/badge/heroku-env
         :target: https://pepy.tech/project/heroku-env
-        :alt: Documentation Status
+        :alt: Downloads
 
 
 Simple CLI tool to upload environment variables to Heroku from a .env file, through the Heroku CLI Toolbelt.

@@ -2,13 +2,15 @@
 
 """Console script for heroku.env"""
 
+# enable absolute imports of this module for Python2.x
+from __future__ import absolute_import
 from __future__ import unicode_literals  # unicode support for py2
 
 import os
 
 import click
 
-from heroku_env.constants import HEROKU_INSTALL_URL, HEROKU_TROUBLESHOOT_URL
+from .constants import HEROKU_INSTALL_URL, HEROKU_TROUBLESHOOT_URL
 from .exceptions import (
     HerokuNotFoundException)
 from .heroku_env import upload_env

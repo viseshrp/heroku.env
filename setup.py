@@ -3,8 +3,6 @@
 
 """The setup script."""
 import io
-import os
-import sys
 
 from setuptools import setup, find_packages
 
@@ -25,15 +23,6 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
 
 with io.open('HISTORY.rst', 'r', encoding='utf-8') as history_file:
     HISTORY = history_file.read()
-
-if sys.argv[-1] == 'tags':
-    os.system("git tag -a {} -m 'version {}'".format(VERSION, VERSION))
-    os.system("git push --tags")
-    sys.exit()
-
-if sys.argv[-1] == 'readme':
-    print(README)
-    sys.exit()
 
 setup(
     name=NAME,

@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+from __future__ import unicode_literals  # unicode support for py2
+
 # subprocess
 EXIT_CODE_SUCCESS = 0
 EXIT_CODE_COMMAND_NOT_FOUND = 127
