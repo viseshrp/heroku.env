@@ -10,6 +10,10 @@ import click
 
 from .heroku_env import upload_env
 from .param_types import APIKeyParamType
+from .exceptions import (
+    HerokuNotFoundException,
+    HerokuEnvException
+)
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
@@ -72,8 +76,13 @@ def main(app, env_file, api_key, set_alt):
         os.environ['HEROKU_API_KEY'] = api_key
     try:
         upload_env(app, env_file, set_alt)
-    except Exception as e:
+    except (
+        HerokuEnvException,
+        HerokuNotFoundException
+    ) as e:
         raise click.ClickException(e)
+    except IndexError:
+        raise click.ClickException("The entries in your .env file are not of the form KEY=VALUE")
 
 
 if __name__ == "__main__":

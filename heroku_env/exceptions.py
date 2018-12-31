@@ -12,4 +12,15 @@ class HerokuEnvException(Exception):
     Base exception. All other exceptions
     inherit from here.
     """
-    pass
+
+
+class HerokuNotFoundException(HerokuEnvException):
+    """
+    Exception raised when Heroku is not installed.
+    """
+
+
+class FailedHerokuRunException(HerokuEnvException):
+    """
+    Exception raised when the Heroku command fails.
+    """

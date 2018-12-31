@@ -1,21 +1,58 @@
 # -*- coding: utf-8 -*-
 
-"""Main module."""
+"""Module containing the core functionality."""
+
 from __future__ import unicode_literals  # unicode support for py2
 
-import os
+import sys
+import subprocess
 
 import click
 
+from .constants import (
+    EXIT_CODE_COMMAND_NOT_FOUND,
+    EXIT_CODE_SUCCESS,
+    HEROKU_INSTALL_URL,
+    HEROKU_TROUBLESHOOT_URL
+)
+from .exceptions import HerokuNotFoundException, FailedHerokuRunException
 
-def set_config_var(name, value, app_name):
-    command = 'heroku config:set "{}={}" --app {}'.format(
-        name, value, app_name
-    )
-    os.system(command)
+
+def set_config_var(key, value, app_name):
+    """
+    Run Heroku Toolbelt to set vars.
+
+    :param key: Env Key
+    :param value: Env value
+    :param app_name: The Heroku app
+    :return: exit code of execution
+    """
+    command = ['heroku', 'config:set', '"{}={}"'.format(key, value), '--app', app_name]
+
+    # use shell for Windows
+    is_shell = sys.platform.startswith("win")
+
+    # If shell is True, it is recommended to pass args
+    # as a string rather than as a sequence.
+    if is_shell:
+        command = ' '.join(command)
+
+    # run subprocess, returns exit code
+    return subprocess.Popen(
+        command,
+        shell=is_shell,
+    ).wait(timeout=5)
 
 
 def upload_env(app_name, env_file, set_alt):
+    """
+    Get and upload env vars to Heroku
+
+    :param app_name: The Heroku app.
+    :param env_file: Path to the env file.
+    :param set_alt: Flag to check if alternate values must be used.
+    :return: None
+    """
     use_alt = False
     alt_value = ''
 
@@ -45,12 +82,26 @@ def upload_env(app_name, env_file, set_alt):
 
                     if use_alt:
                         value = alt_value
+                        # reset
                         use_alt = False
                     else:
                         value = kv_pair[1]
 
                     # an empty value is fine
                     if key:
-                        set_config_var(key, value, app_name)
+                        exit_code = set_config_var(key, value, app_name)
+                        # check command exit code
+                        if exit_code != EXIT_CODE_SUCCESS:
+                            if exit_code == EXIT_CODE_COMMAND_NOT_FOUND:
+                                # launch install url in web browser
+                                click.launch(HEROKU_INSTALL_URL)
+                                # raise
+                                raise HerokuNotFoundException("Heroku CLI is missing on your system."
+                                                              " Please install it before proceeding.")
+                            # default failed run
+                            click.launch(HEROKU_TROUBLESHOOT_URL)
+                            raise FailedHerokuRunException("Running of the Heroku CLI failed."
+                                                           " Please check your arguments and try again.")
+
             else:
                 click.echo("Skipping line : Not of the form key=value")
