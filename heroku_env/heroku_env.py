@@ -13,7 +13,8 @@ from .constants import (
     EXIT_CODE_COMMAND_NOT_FOUND,
     EXIT_CODE_SUCCESS,
     HEROKU_INSTALL_URL,
-    HEROKU_TROUBLESHOOT_URL
+    HEROKU_TROUBLESHOOT_URL,
+    SUBPROCESS_WAIT_TIMEOUT
 )
 from .exceptions import HerokuNotFoundException, FailedHerokuRunException
 
@@ -29,19 +30,11 @@ def set_config_var(key, value, app_name):
     """
     command = ['heroku', 'config:set', '"{}={}"'.format(key, value), '--app', app_name]
 
-    # use shell for Windows
-    is_shell = sys.platform.startswith("win")
-
-    # If shell is True, it is recommended to pass args
-    # as a string rather than as a sequence.
-    if is_shell:
-        command = ' '.join(command)
-
     # run subprocess, returns exit code
     return subprocess.Popen(
         command,
-        shell=is_shell,
-    ).wait(timeout=5)
+        shell=False,
+    ).wait(timeout=SUBPROCESS_WAIT_TIMEOUT)
 
 
 def upload_env(app_name, env_file, set_alt):
