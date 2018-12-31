@@ -4,17 +4,13 @@
 
 from __future__ import unicode_literals  # unicode support for py2
 
-import sys
 import subprocess
 
 import click
 
 from .constants import (
-    EXIT_CODE_COMMAND_NOT_FOUND,
-    EXIT_CODE_SUCCESS,
-    HEROKU_INSTALL_URL,
-    HEROKU_TROUBLESHOOT_URL,
-    SUBPROCESS_WAIT_TIMEOUT
+    SUBPROCESS_WAIT_TIMEOUT,
+    EXIT_CODE_SUCCESS
 )
 from .exceptions import HerokuNotFoundException, FailedHerokuRunException
 
@@ -28,7 +24,7 @@ def set_config_var(key, value, app_name):
     :param app_name: The Heroku app
     :return: exit code of execution
     """
-    command = ['heroku', 'config:set', '"{}={}"'.format(key, value), '--app', app_name]
+    command = ['heroku', 'config:set', '{}={}'.format(key, value), '--app', app_name]
 
     # run subprocess, returns exit code
     return subprocess.Popen(
@@ -82,19 +78,16 @@ def upload_env(app_name, env_file, set_alt):
 
                     # an empty value is fine
                     if key:
-                        exit_code = set_config_var(key, value, app_name)
-                        # check command exit code
-                        if exit_code != EXIT_CODE_SUCCESS:
-                            if exit_code == EXIT_CODE_COMMAND_NOT_FOUND:
-                                # launch install url in web browser
-                                click.launch(HEROKU_INSTALL_URL)
-                                # raise
-                                raise HerokuNotFoundException("Heroku CLI is missing on your system."
-                                                              " Please install it before proceeding.")
-                            # default failed run
-                            click.launch(HEROKU_TROUBLESHOOT_URL)
-                            raise FailedHerokuRunException("Running of the Heroku CLI failed."
-                                                           " Please check your arguments and try again.")
 
+                        try:
+                            exit_status = set_config_var(key, value, app_name)
+                        except FileNotFoundError:
+                            # This is raised by subprocess if command is not found.
+                            raise HerokuNotFoundException("Heroku CLI is missing on your system."
+                                                          " Please install it before proceeding.")
+
+                        if exit_status != EXIT_CODE_SUCCESS:
+                            raise FailedHerokuRunException("Running of the Heroku CLI failed."
+                                                           " Please check your API key / arguments and try again.")
             else:
                 click.echo("Skipping line : Not of the form key=value")
