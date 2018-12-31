@@ -9,9 +9,9 @@ import sys
 from setuptools import setup, find_packages
 
 # Package meta-data.
-VERSION = '0.3.0'
+VERSION = '0.4.0'
 NAME = 'heroku.env'
-DESCRIPTION = "CLI tool to load heroku env vars from local .env files"
+DESCRIPTION = "CLI tool to upload environment variables from local .env files to Heroku"
 URL = 'https://github.com/viseshrp/heroku.env'
 EMAIL = 'viseshrprasad@gmail.com'
 AUTHOR = 'Visesh Prasad'

@@ -8,6 +8,9 @@ import os
 
 import click
 
+from heroku_env.constants import HEROKU_INSTALL_URL, HEROKU_TROUBLESHOOT_URL
+from .exceptions import (
+    HerokuNotFoundException)
 from .heroku_env import upload_env
 from .param_types import APIKeyParamType
 
@@ -72,7 +75,16 @@ def main(app, env_file, api_key, set_alt):
         os.environ['HEROKU_API_KEY'] = api_key
     try:
         upload_env(app, env_file, set_alt)
+    except HerokuNotFoundException as e:
+        # prompt Heroku install if Heroku is not installed.
+        click.launch(HEROKU_INSTALL_URL)
+        raise click.ClickException(e)
+    except IndexError:
+        raise click.ClickException("The entries in your .env file are not of the form KEY=VALUE")
     except Exception as e:
+        # all other exceptions indicate a failed run
+        # redirect to Heroku CLI troubleshooting page.
+        click.launch(HEROKU_TROUBLESHOOT_URL)
         raise click.ClickException(e)
 
 

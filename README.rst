@@ -13,6 +13,10 @@ heroku.env
         :target: https://herokuenv.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
+.. image:: https://pepy.tech/badge/heroku-env
+        :target: https://pepy.tech/project/heroku-env
+        :alt: Documentation Status
+
 
 Simple CLI tool to upload environment variables to Heroku from a .env file, through the Heroku CLI Toolbelt.
 
@@ -62,18 +66,20 @@ Examples:
 
 Examples:
 
-.. code-block:: bash
+.. code-block:: yaml
 
     # Django settings module
     DJANGO_SETTINGS_MODULE=portfolio.settings
 
 * Allow setting of alternate values by specifying  ``alt_value=VALUE`` in comments of the env file.
 
-For example, if using the .env file in production and you want to set a different value.
-
-NOTE: The ``alt_value`` needs to be on the line right before the actual env var you want to change.
+For example, if you want to load the env vars from the .env file into a Heroku app running in production,
+you might want to use different values for some variables, than the ones in the .env file.
 
 Examples of allowed usages:
+
+I use a portfolio.env for my portfolio app running in Docker for local development.
+If I want the Heroku app to use a different value for ``DJANGO_SETTINGS_MODULE``, I would do something like this:
 
 .. code-block:: yaml
 
@@ -96,13 +102,16 @@ OR
     # Django settings module
     DJANGO_SETTINGS_MODULE=portfolio.settings
 
-Note that anything specified after ``alt_value=`` is used as the alternate value.
+NOTE: The ``alt_value`` needs to be on the line right before the actual env var you want to change.
+Also note that **anything** (except for trailing whitespace) specified after ``alt_value=`` is used as the alternate value, so be careful.
 
-AND then,
+Any of these methods above will force the tool to replace the value for ``DJANGO_SETTINGS_MODULE`` with
+``portfolio.prod_settings`` instead of the actual ``portfolio.settings``, but only if you run with the option
+``--set-alt`` like this:
 
 .. code-block:: bash
 
-    $ heroku.env --app swimming-briskly-123 --env-file dot.env --set-alt
+    $ heroku.env --app swimming-briskly-123 --env-file portfolio.env --set-alt
 
 * Secure, does not store your API key anywhere.
 
