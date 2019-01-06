@@ -9,10 +9,18 @@ from __future__ import unicode_literals  # unicode support for py2
 import os
 
 import click
+import requests
 
 from heroku_env import __version__
-from .constants import HEROKU_TROUBLESHOOT_URL
-from .exceptions import HerokuRunError
+from .constants import (
+    HEROKU_TROUBLESHOOT_URL,
+    HEROKU_API_KEY_HELP_URL
+)
+from .exceptions import (
+    HerokuRunError,
+    InvalidHerokuAppError,
+    InvalidAPIKeyError
+)
 from .heroku_env import upload_env
 from .param_types import APIKeyParamType
 
@@ -81,12 +89,24 @@ def main(app, env_file, api_key, set_alt):
     except IndexError:
         raise click.ClickException("The entries in your .env file are not of the form KEY=VALUE")
     except HerokuRunError as e:
-        # redirect to Heroku troubleshooting page for a failed run.
+        # launch Heroku troubleshooting page for a failed run.
         click.launch(HEROKU_TROUBLESHOOT_URL)
         raise click.ClickException(e)
+    except InvalidAPIKeyError as e:
+        # launch API key doc
+        click.launch(HEROKU_API_KEY_HELP_URL)
+        raise click.ClickException(e)
+    except (
+        HerokuRunError,
+        InvalidHerokuAppError
+    ) as e:
+        raise click.ClickException(e)
+    except requests.exceptions.ConnectionError:
+        raise click.ClickException("Please check your internet connection and try again.")
     except Exception as e:
         # all other exceptions
-        raise click.ClickException(e)
+        click.echo(e)
+        raise click.ClickException("An unknown error occurred. Please open an issue with the log.")
 
 
 if __name__ == "__main__":

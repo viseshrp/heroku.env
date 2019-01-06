@@ -55,84 +55,88 @@ Features
 
 * Auto-setting of all env vars from a .env file.
 
-Examples:
+    Examples:
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    $ heroku.env --app swimming-briskly-123 --env-file dot.env
+        $ heroku.env --app swimming-briskly-123 --env-file dot.env
 
 * Lines starting with # are considered comments in the env file and ignored.
 
-Examples:
+    Examples:
 
-.. code-block:: yaml
+    .. code-block:: yaml
 
-    # Django settings module
-    DJANGO_SETTINGS_MODULE=portfolio.settings
+        # Django settings module
+        DJANGO_SETTINGS_MODULE=portfolio.settings
 
 * Allow setting of alternate values by specifying  ``alt_value=VALUE`` in comments of the env file.
 
-For example, if you want to load the env vars from the .env file into a Heroku app running in production,
-you might want to use different values for some variables, than the ones in the .env file.
+    For example, if you want to load the env vars from the .env file into a Heroku app running in production,
+    you might want to use different values for some variables, than the ones in the .env file.
 
-Examples of allowed usages:
+    Examples of allowed usages:
 
-I use a portfolio.env for my portfolio app running in Docker for local development.
-If I want the Heroku app to use a different value for ``DJANGO_SETTINGS_MODULE``, I would do something like this:
+    I use a portfolio.env for my portfolio app running in Docker for local development.
+    If I want the Heroku app to use a different value for ``DJANGO_SETTINGS_MODULE``, I would do something like this:
 
-.. code-block:: yaml
+    .. code-block:: yaml
 
-    # Django settings module alt_value=portfolio.prod_settings
-    DJANGO_SETTINGS_MODULE=portfolio.settings
+        # Django settings module alt_value=portfolio.prod_settings
+        DJANGO_SETTINGS_MODULE=portfolio.settings
 
-OR
+    OR
 
-.. code-block:: yaml
+    .. code-block:: yaml
 
-    # Django settings module
-    # alt_value=portfolio.prod_settings
-    DJANGO_SETTINGS_MODULE=portfolio.settings
+        # Django settings module
+        # alt_value=portfolio.prod_settings
+        DJANGO_SETTINGS_MODULE=portfolio.settings
 
-OR
+    OR
 
-.. code-block:: yaml
+    .. code-block:: yaml
 
-    # alt_value=portfolio.prod_settings
-    # Django settings module
-    DJANGO_SETTINGS_MODULE=portfolio.settings
+        # alt_value=portfolio.prod_settings
+        # Django settings module
+        DJANGO_SETTINGS_MODULE=portfolio.settings
 
-NOTE: The ``alt_value`` needs to be on the line right before the actual env var you want to change.
-Also note that **anything** (except for trailing whitespace) specified after ``alt_value=`` is used as the alternate value, so be careful.
+    NOTE: The ``alt_value`` needs to be on the line right before the actual env var you want to change.
+    Also note that **anything** (except for trailing whitespace) specified after ``alt_value=`` is used as the alternate value, so be careful.
 
-Any of these methods above will force the tool to replace the value for ``DJANGO_SETTINGS_MODULE`` with
-``portfolio.prod_settings`` instead of the actual ``portfolio.settings``, but only if you run with the option
-``--set-alt`` like this:
+    Any of these methods above will force the tool to replace the value for ``DJANGO_SETTINGS_MODULE`` with
+    ``portfolio.prod_settings`` instead of the actual ``portfolio.settings``, but only if you run with the option
+    ``--set-alt`` like this:
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    $ heroku.env --app swimming-briskly-123 --env-file portfolio.env --set-alt
+        $ heroku.env --app swimming-briskly-123 --env-file portfolio.env --set-alt
 
 * Secure, does not store your API key anywhere.
 
-The API key can be set as an environment variable (as ``HEROKU_API_KEY`` **before** running the tool) or passed with ``--api-key`` or ``-k``.
+    There are 3 ways of passing your API key:
+        * setting it as an environment variable (recommended: set as ``HEROKU_API_KEY`` **before** running the tool)
+        * entering it in a password prompt.
+        * passing with ``--api-key`` or ``-k``
 
-If the API key is set as an environment variable, it will be automatically read.
+    If the API key is set as an environment variable, it will be automatically read first.
+    **All other ways of setting it will be ignored.**
 
-If it is not set in any way, you will be given a password-type prompt to enter it.
+    If it is not set in any way, you will be given a password-type prompt to enter it.
 
-It is recommended for security purposes that you set it as an environment variable before running the tool, like this:
+    It is recommended for security purposes that you set it as an environment variable before running the tool, like this:
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    $ export HEROKU_API_KEY=a1b12c24-ab1d-123f-5678-1234b12a0a1b
+        $ export HEROKU_API_KEY=a1b12c24-ab1d-123f-5678-1234b12a0a1b
 
-OR you can wait for the prompt.
+    OR you can wait for the prompt.
 
-This is **not** recommended, but still available as an option.
+    This is **not** recommended, but is still available as an option.
 
-.. code-block:: bash
+    .. code-block:: bash
 
-    $ heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
+        $ heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
 
 
 See all options with:

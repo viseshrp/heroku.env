@@ -8,8 +8,13 @@ import os
 
 import click
 import heroku3
+import requests
 
-from .exceptions import HerokuRunError, InvalidHerokuAppError
+from .exceptions import (
+    HerokuRunError,
+    InvalidHerokuAppError,
+    InvalidAPIKeyError
+)
 
 
 def update_config_vars(config_dict, app):
@@ -17,7 +22,7 @@ def update_config_vars(config_dict, app):
     Use the Heroku API to update config vars
 
     :param config_dict: dictionary of config vars
-    :param app_name: name of the Heroku app
+    :param app: name of the Heroku app
     :return: None
     """
     updated_config = app.update_config(config_dict)
@@ -33,12 +38,13 @@ def upload_env(app_name, env_file, set_alt):
     :param set_alt: Flag to check if alternate values must be used.
     :return: None
     """
-    # key error isn't expected here since the CLI tool
-    # forces an API key before it reaches this point.
-    heroku_conn = heroku3.from_key(os.environ['HEROKU_API_KEY'])
-
     try:
+        # key error isn't expected here since the CLI tool
+        # forces an API key before it reaches this point.
+        heroku_conn = heroku3.from_key(os.environ['HEROKU_API_KEY'])
         app_instance = heroku_conn.apps()[app_name]
+    except requests.exceptions.HTTPError:
+        raise InvalidAPIKeyError("Please check your API key and try again.")
     except KeyError:
         raise InvalidHerokuAppError(
             "We could not find a Heroku app named {} registered with your API key".format(app_name))

@@ -24,3 +24,9 @@ class InvalidHerokuAppError(HerokuEnvException):
     """
     Exception raised when the given Heroku app is invalid
     """
+
+
+class InvalidAPIKeyError(HerokuEnvException):
+    """
+    Raised when the provided Heroku API key is wrong
+    """
