@@ -14,13 +14,19 @@ class HerokuEnvException(Exception):
     """
 
 
-class HerokuNotFoundException(HerokuEnvException):
-    """
-    Exception raised when Heroku is not installed.
-    """
-
-
-class FailedHerokuRunException(HerokuEnvException):
+class HerokuRunError(HerokuEnvException):
     """
     Exception raised when the Heroku command fails.
+    """
+
+
+class InvalidHerokuAppError(HerokuEnvException):
+    """
+    Exception raised when the given Heroku app is invalid
+    """
+
+
+class InvalidAPIKeyError(HerokuEnvException):
+    """
+    Raised when the provided Heroku API key is wrong
     """

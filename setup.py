@@ -3,20 +3,19 @@
 
 """The setup script."""
 import io
-import os
-import sys
 
 from setuptools import setup, find_packages
 
 # Package meta-data.
-VERSION = '0.4.0'
+VERSION = '0.5.0'
 NAME = 'heroku.env'
 DESCRIPTION = "CLI tool to upload environment variables from local .env files to Heroku"
 URL = 'https://github.com/viseshrp/heroku.env'
 EMAIL = 'viseshrprasad@gmail.com'
 AUTHOR = 'Visesh Prasad'
 REQUIRES_PYTHON = ">=2.7"
-REQUIREMENTS = ['future>=0.15.2', 'Click>=6.0', ]
+REQUIREMENTS = ['future>=0.15.2', 'Click>=6.0', 'requests>=1.2.3',
+                'heroku3>=3.4.0', 'colorama>=0.4.1']
 SETUP_REQUIREMENTS = ['pytest-runner', ]
 TEST_REQUIREMENTS = ['pytest', ]
 
@@ -25,15 +24,6 @@ with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
 
 with io.open('HISTORY.rst', 'r', encoding='utf-8') as history_file:
     HISTORY = history_file.read()
-
-if sys.argv[-1] == 'tags':
-    os.system("git tag -a {} -m 'version {}'".format(VERSION, VERSION))
-    os.system("git push --tags")
-    sys.exit()
-
-if sys.argv[-1] == 'readme':
-    print(README)
-    sys.exit()
 
 setup(
     name=NAME,
@@ -47,7 +37,7 @@ setup(
     include_package_data=True,
     license="MIT license",
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',

@@ -24,5 +24,6 @@ deploy:
   password:
     secure: PLEASE_REPLACE_ME
   on:
+    branch: develop
     repo: viseshrp/heroku.env
     python: 3.6

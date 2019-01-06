@@ -4,33 +4,29 @@
 
 from __future__ import unicode_literals  # unicode support for py2
 
-import subprocess
+import os
 
 import click
+import heroku3
+import requests
 
-from .constants import (
-    SUBPROCESS_WAIT_TIMEOUT,
-    EXIT_CODE_SUCCESS
+from .exceptions import (
+    HerokuRunError,
+    InvalidHerokuAppError,
+    InvalidAPIKeyError
 )
-from .exceptions import HerokuNotFoundException, FailedHerokuRunException
 
 
-def set_config_var(key, value, app_name):
+def update_config_vars(config_dict, app):
     """
-    Run Heroku Toolbelt to set vars.
+    Use the Heroku API to update config vars
 
-    :param key: Env Key
-    :param value: Env value
-    :param app_name: The Heroku app
-    :return: exit code of execution
+    :param config_dict: dictionary of config vars
+    :param app: name of the Heroku app
+    :return: None
     """
-    command = ['heroku', 'config:set', '{}={}'.format(key, value), '--app', app_name]
-
-    # run subprocess, returns exit code
-    return subprocess.Popen(
-        command,
-        shell=False,
-    ).wait(timeout=SUBPROCESS_WAIT_TIMEOUT)
+    updated_config = app.update_config(config_dict)
+    return updated_config.to_dict()
 
 
 def upload_env(app_name, env_file, set_alt):
@@ -42,6 +38,19 @@ def upload_env(app_name, env_file, set_alt):
     :param set_alt: Flag to check if alternate values must be used.
     :return: None
     """
+    try:
+        # key error isn't expected here since the CLI tool
+        # forces an API key before it reaches this point.
+        heroku_conn = heroku3.from_key(os.environ['HEROKU_API_KEY'])
+        app_instance = heroku_conn.apps()[app_name]
+    except requests.exceptions.HTTPError:
+        raise InvalidAPIKeyError("Please check your API key and try again.")
+    except KeyError:
+        raise InvalidHerokuAppError(
+            "We could not find a Heroku app named {} registered with your API key".format(app_name))
+
+    # init
+    config_dict = {}
     use_alt = False
     alt_value = ''
 
@@ -58,8 +67,6 @@ def upload_env(app_name, env_file, set_alt):
                     if alt_value:
                         # use this value for the next env var
                         use_alt = True
-                else:
-                    click.echo("Skipping comment...")
                 # any kind of comment warrants a skip
                 continue
 
@@ -78,16 +85,18 @@ def upload_env(app_name, env_file, set_alt):
 
                     # an empty value is fine
                     if key:
+                        config_dict[key] = value
+                        # verify
+                        click.secho(u'\u2713 ' + key, fg='green', bold=True)
 
-                        try:
-                            exit_status = set_config_var(key, value, app_name)
-                        except FileNotFoundError:
-                            # This is raised by subprocess if command is not found.
-                            raise HerokuNotFoundException("Heroku CLI is missing on your system."
-                                                          " Please install it before proceeding.")
-
-                        if exit_status != EXIT_CODE_SUCCESS:
-                            raise FailedHerokuRunException("Running of the Heroku CLI failed."
-                                                           " Please check your API key / arguments and try again.")
             else:
                 click.echo("Skipping line : Not of the form key=value")
+
+    # update
+    update_result = update_config_vars(config_dict, app_instance)
+
+    if not update_result:
+        raise HerokuRunError("Failed to update env vars. Possibly an error with Heroku."
+                             " Please contact Heroku support.")
+
+    click.echo("Config vars updated successfully.")
