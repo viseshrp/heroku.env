@@ -12,7 +12,7 @@ from .constants import (
     SUBPROCESS_WAIT_TIMEOUT,
     EXIT_CODE_SUCCESS
 )
-from .exceptions import HerokuNotFoundException, FailedHerokuRunException
+from .exceptions import HerokuNotFoundError, HerokuRunError
 
 
 def set_config_var(key, value, app_name):
@@ -80,14 +80,14 @@ def upload_env(app_name, env_file, set_alt):
                     if key:
 
                         try:
-                            exit_status = set_config_var(key, value, app_name)
+                            exit_code = set_config_var(key, value, app_name)
                         except FileNotFoundError:
                             # This is raised by subprocess if command is not found.
-                            raise HerokuNotFoundException("Heroku CLI is missing on your system."
-                                                          " Please install it before proceeding.")
+                            raise HerokuNotFoundError("Heroku CLI is missing on your system."
+                                                      " Please install it before proceeding.")
 
-                        if exit_status != EXIT_CODE_SUCCESS:
-                            raise FailedHerokuRunException("Running of the Heroku CLI failed."
-                                                           " Please check your API key / arguments and try again.")
+                        if exit_code != EXIT_CODE_SUCCESS:
+                            raise HerokuRunError("Running of the Heroku CLI failed."
+                                                 " Please check your API key / arguments and try again.")
             else:
                 click.echo("Skipping line : Not of the form key=value")

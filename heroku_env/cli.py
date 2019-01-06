@@ -10,14 +10,16 @@ import os
 
 import click
 
+from heroku_env import __version__
 from .constants import HEROKU_INSTALL_URL, HEROKU_TROUBLESHOOT_URL
 from .exceptions import (
-    HerokuNotFoundException)
+    HerokuNotFoundError)
 from .heroku_env import upload_env
 from .param_types import APIKeyParamType
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
+@click.version_option(__version__, '-v', '--version')
 @click.option(
     '-a',
     '--app',
@@ -77,7 +79,7 @@ def main(app, env_file, api_key, set_alt):
         os.environ['HEROKU_API_KEY'] = api_key
     try:
         upload_env(app, env_file, set_alt)
-    except HerokuNotFoundException as e:
+    except HerokuNotFoundError as e:
         # prompt Heroku install if Heroku is not installed.
         click.launch(HEROKU_INSTALL_URL)
         raise click.ClickException(e)

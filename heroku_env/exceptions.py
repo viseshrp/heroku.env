@@ -14,13 +14,13 @@ class HerokuEnvException(Exception):
     """
 
 
-class HerokuNotFoundException(HerokuEnvException):
+class HerokuNotFoundError(HerokuEnvException):
     """
     Exception raised when Heroku is not installed.
     """
 
 
-class FailedHerokuRunException(HerokuEnvException):
+class HerokuRunError(HerokuEnvException):
     """
     Exception raised when the Heroku command fails.
     """
