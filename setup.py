@@ -14,7 +14,7 @@ URL = 'https://github.com/viseshrp/heroku.env'
 EMAIL = 'viseshrprasad@gmail.com'
 AUTHOR = 'Visesh Prasad'
 REQUIRES_PYTHON = ">=2.7"
-REQUIREMENTS = ['future>=0.15.2', 'Click>=6.0', ]
+REQUIREMENTS = ['future>=0.15.2', 'Click>=6.0', 'heroku3>=3.4.0']
 SETUP_REQUIREMENTS = ['pytest-runner', ]
 TEST_REQUIREMENTS = ['pytest', ]
 

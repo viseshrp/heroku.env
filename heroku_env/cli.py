@@ -11,9 +11,8 @@ import os
 import click
 
 from heroku_env import __version__
-from .constants import HEROKU_INSTALL_URL, HEROKU_TROUBLESHOOT_URL
-from .exceptions import (
-    HerokuNotFoundError)
+from .constants import HEROKU_TROUBLESHOOT_URL
+from .exceptions import HerokuRunError
 from .heroku_env import upload_env
 from .param_types import APIKeyParamType
 
@@ -60,7 +59,7 @@ from .param_types import APIKeyParamType
 def main(app, env_file, api_key, set_alt):
     """
     Simple CLI tool to upload environment variables to
-    Heroku from a .env file, through the Heroku CLI Toolbelt.
+    Heroku from a .env file, through the Heroku API.
 
     It is recommended for security purposes that you set API
     key as an environment variable like this:
@@ -79,16 +78,14 @@ def main(app, env_file, api_key, set_alt):
         os.environ['HEROKU_API_KEY'] = api_key
     try:
         upload_env(app, env_file, set_alt)
-    except HerokuNotFoundError as e:
-        # prompt Heroku install if Heroku is not installed.
-        click.launch(HEROKU_INSTALL_URL)
-        raise click.ClickException(e)
     except IndexError:
         raise click.ClickException("The entries in your .env file are not of the form KEY=VALUE")
-    except Exception as e:
-        # all other exceptions indicate a failed run
-        # redirect to Heroku CLI troubleshooting page.
+    except HerokuRunError as e:
+        # redirect to Heroku troubleshooting page for a failed run.
         click.launch(HEROKU_TROUBLESHOOT_URL)
+        raise click.ClickException(e)
+    except Exception as e:
+        # all other exceptions
         raise click.ClickException(e)
 
 

@@ -18,7 +18,7 @@ heroku.env
         :alt: Downloads
 
 
-Simple CLI tool to upload environment variables to Heroku from a .env file, through the Heroku CLI Toolbelt.
+Simple CLI tool to upload environment variables to Heroku from a .env file, through the Heroku API.
 
 * GitHub: https://github.com/viseshrp/heroku.env
 * PyPI: https://pypi.python.org/pypi/heroku.env
@@ -44,11 +44,10 @@ Installation
 Requirements
 ------------
 
-#. Tested on Python 3.6+ but may work in Python 2.7+.
-#. `Heroku CLI`_ (Toolbelt) installed.
+#. Python 2.7+
+#. Your Heroku API key (found `here`_ or by running `this`_), for the Heroku API to run and authenticate you.
 #. A valid Heroku app name is required to run against.
-#. The absolute/relative path to the .env file is also needed, but if not provided, ".env" will be used as the default, which expects a file named .env to be present in the current working directory.
-#. Your Heroku API key (found `here`_ or by running `this`_), for Heroku CLI to run and authenticate you.
+#. The absolute/relative path to the .env file is also needed, but if not provided, ``.env`` will be used as the default file name, which expects a file named ``.env`` to be present in the current working directory.
 
 
 Features
@@ -115,8 +114,6 @@ Any of these methods above will force the tool to replace the value for ``DJANGO
 
 * Secure, does not store your API key anywhere.
 
-Its just a light wrapper around the Heroku CLI/Toolbelt and any access to Heroku only happens through the toolbelt.
-
 The API key can be set as an environment variable (as ``HEROKU_API_KEY`` **before** running the tool) or passed with ``--api-key`` or ``-k``.
 
 If the API key is set as an environment variable, it will be automatically read.
@@ -150,12 +147,13 @@ Credits
 
 * This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 * This is inspired by a script by `sdkcodes`_.
+* **martyzz1**, for the `heroku3`_ API wrapper.
 * `Click`_, for making writing CLI tools a complete pleasure.
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+.. _audreyr/cookiecutter-pypackage: https://github.com/audreyr/cookiecutter-pypackage
 .. _sdkcodes: https://github.com/sdkcodes/heroku-config
-.. _Heroku CLI: https://devcenter.heroku.com/articles/heroku-cli#download-and-install
 .. _here: https://dashboard.heroku.com/account
 .. _this: https://devcenter.heroku.com/articles/authentication#retrieving-the-api-token
 .. _Click: https://click.palletsprojects.com
+.. _heroku3: https://github.com/martyzz1/heroku3.py
