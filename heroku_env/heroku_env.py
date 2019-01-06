@@ -80,6 +80,8 @@ def upload_env(app_name, env_file, set_alt):
                     # an empty value is fine
                     if key:
                         config_dict[key] = value
+                        # verify
+                        click.secho(u'\u2713 ' + key, fg='green', bold=True)
 
             else:
                 click.echo("Skipping line : Not of the form key=value")
@@ -90,3 +92,5 @@ def upload_env(app_name, env_file, set_alt):
     if not update_result:
         raise HerokuRunError("Failed to update env vars. Possibly an error with Heroku."
                              " Please contact Heroku support.")
+
+    click.echo("Config vars updated successfully.")
