@@ -2,6 +2,13 @@
 History
 =======
 
+0.5.0 (2019-01-06)
+------------------
+
+* Major revamp: Does not require Heroku CLI anymore. Uses Heroku API instead.
+* Added --version/-v to check version
+* Minor improvements
+
 
 0.4.0 (2018-12-30)
 ------------------
