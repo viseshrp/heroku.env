@@ -38,7 +38,7 @@ Installation
 ------------
 .. code-block:: bash
 
-    pip install heroku.env
+    pip install -U heroku.env
 
 
 Requirements
