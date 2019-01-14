@@ -9,5 +9,5 @@ Sphinx==1.8.3
 twine==1.12.1
 readme_renderer[md]==24.0
 
-pytest==4.1.0
+pytest==4.1.1
 pytest-runner==4.2
