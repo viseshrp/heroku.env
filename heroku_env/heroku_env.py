@@ -52,7 +52,7 @@ def upload_env(app_name, env_file, set_alt):
     # init
     config_dict = {}
     use_alt = False
-    alt_value = ''
+    alt_value = None
 
     with open(env_file) as e:
 
@@ -64,7 +64,7 @@ def upload_env(app_name, env_file, set_alt):
                     # enable --set-alt
                     if set_alt and "alt_value=" in line:
                         alt_value = line.split("alt_value=", 1)[1]
-                        if alt_value:
+                        if alt_value is not None:
                             # use this value for the next env var
                             use_alt = True
                     # any kind of comment warrants a skip
@@ -77,6 +77,10 @@ def upload_env(app_name, env_file, set_alt):
                         key = kv_pair[0]
 
                         if use_alt:
+                            if alt_value == '':
+                                # skip the value if its an empty string
+                                continue
+
                             value = alt_value
                             # reset
                             use_alt = False

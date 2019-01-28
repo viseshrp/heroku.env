@@ -104,6 +104,17 @@ Features
     NOTE: The ``alt_value`` needs to be on the line right before the actual env var you want to change.
     Also note that **anything** (except for trailing whitespace) specified after ``alt_value=`` is used as the alternate value, so be careful.
 
+    If you want to skip an environment variable, use ``alt_value=`` and it won't be set on the app. Note that this will not remove
+    if its added already, but only skips it.
+
+    For example, this variable will be skipped:
+
+    .. code-block:: yaml
+
+        # Python deprecation warnings
+        # alt_value=
+        PYTHONWARNINGS=always
+
     Any of these methods above will force the tool to replace the value for ``DJANGO_SETTINGS_MODULE`` with
     ``portfolio.prod_settings`` instead of the actual ``portfolio.settings``, but only if you run with the option
     ``--set-alt`` like this:
