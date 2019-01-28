@@ -13,7 +13,8 @@ import requests
 from .exceptions import (
     HerokuRunError,
     InvalidHerokuAppError,
-    InvalidAPIKeyError
+    InvalidAPIKeyError,
+    RateLimitExceededError
 )
 
 
@@ -95,6 +96,11 @@ def upload_env(app_name, env_file, set_alt):
 
                 else:
                     click.echo("Skipping line : Not of the form key=value")
+
+    # check rate limit before hitting API
+    if heroku_conn.ratelimit_remaining() < 1:
+        raise RateLimitExceededError("You have reached the maximum number of calls to Heroku"
+                                     " API for your key. Please try later.")
 
     # update
     update_result = update_config_vars(config_dict, app_instance)

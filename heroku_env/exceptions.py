@@ -30,3 +30,9 @@ class InvalidAPIKeyError(HerokuEnvException):
     """
     Raised when the provided Heroku API key is wrong
     """
+
+
+class RateLimitExceededError(HerokuEnvException):
+    """
+    Raised when the Heroku API rate limit has exceeded
+    """
