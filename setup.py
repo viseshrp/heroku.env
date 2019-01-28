@@ -7,7 +7,7 @@ import io
 from setuptools import setup, find_packages
 
 # Package meta-data.
-VERSION = '0.5.1'
+VERSION = '0.5.2'
 NAME = 'heroku.env'
 DESCRIPTION = "CLI tool to upload environment variables from local .env files to Heroku"
 URL = 'https://github.com/viseshrp/heroku.env'
