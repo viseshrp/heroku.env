@@ -6,6 +6,8 @@ History
 ------------------
 
 * allow skipping of env vars
+* allow removal of env vars
+* check for rate limit
 
 0.5.0 (2019-01-06)
 ------------------

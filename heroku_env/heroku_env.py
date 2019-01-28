@@ -81,17 +81,23 @@ def upload_env(app_name, env_file, set_alt):
                             if alt_value == '':
                                 # skip the value if its an empty string
                                 continue
+                            elif alt_value == '-':
+                                # set to None if alt_value is '-'
+                                # this allows removal of a config var.
+                                value = None
+                            else:
+                                value = alt_value
 
-                            value = alt_value
                             # reset
                             use_alt = False
                         else:
                             value = kv_pair[1]
 
-                        # an empty value is fine
+                        # finally, set to config dict
+                        # an empty value is fine but obviously not an empty key.
                         if key:
                             config_dict[key] = value
-                            # verify
+                            # confirm
                             click.secho(u'\u2713 ' + key, fg='green', bold=True)
 
                 else:
