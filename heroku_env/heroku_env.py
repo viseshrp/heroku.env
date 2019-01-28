@@ -13,7 +13,8 @@ import requests
 from .exceptions import (
     HerokuRunError,
     InvalidHerokuAppError,
-    InvalidAPIKeyError
+    InvalidAPIKeyError,
+    RateLimitExceededError
 )
 
 
@@ -52,7 +53,7 @@ def upload_env(app_name, env_file, set_alt):
     # init
     config_dict = {}
     use_alt = False
-    alt_value = ''
+    alt_value = None
 
     with open(env_file) as e:
 
@@ -64,7 +65,7 @@ def upload_env(app_name, env_file, set_alt):
                     # enable --set-alt
                     if set_alt and "alt_value=" in line:
                         alt_value = line.split("alt_value=", 1)[1]
-                        if alt_value:
+                        if alt_value is not None:
                             # use this value for the next env var
                             use_alt = True
                     # any kind of comment warrants a skip
@@ -77,20 +78,35 @@ def upload_env(app_name, env_file, set_alt):
                         key = kv_pair[0]
 
                         if use_alt:
-                            value = alt_value
+                            if alt_value == '':
+                                # skip the value if its an empty string
+                                continue
+                            elif alt_value == '-':
+                                # set to None if alt_value is '-'
+                                # this allows removal of a config var.
+                                value = None
+                            else:
+                                value = alt_value
+
                             # reset
                             use_alt = False
                         else:
                             value = kv_pair[1]
 
-                        # an empty value is fine
+                        # finally, set to config dict
+                        # an empty value is fine but obviously not an empty key.
                         if key:
                             config_dict[key] = value
-                            # verify
+                            # confirm
                             click.secho(u'\u2713 ' + key, fg='green', bold=True)
 
                 else:
                     click.echo("Skipping line : Not of the form key=value")
+
+    # check rate limit before hitting API
+    if heroku_conn.ratelimit_remaining() < 1:
+        raise RateLimitExceededError("You have reached the maximum number of calls to Heroku"
+                                     " API for your key. Please try later.")
 
     # update
     update_result = update_config_vars(config_dict, app_instance)

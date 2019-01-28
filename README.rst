@@ -70,7 +70,7 @@ Features
         # Django settings module
         DJANGO_SETTINGS_MODULE=portfolio.settings
 
-* Allow setting of alternate values by specifying  ``alt_value=VALUE`` in comments of the env file.
+* Allow setting of alternate values or removal/skipping of an env var by specifying ``alt_value`` in the comments of the env file AND with the option ``--set-alt``.
 
     For example, if you want to load the env vars from the .env file into a Heroku app running in production,
     you might want to use different values for some variables, than the ones in the .env file.
@@ -104,9 +104,31 @@ Features
     NOTE: The ``alt_value`` needs to be on the line right before the actual env var you want to change.
     Also note that **anything** (except for trailing whitespace) specified after ``alt_value=`` is used as the alternate value, so be careful.
 
-    Any of these methods above will force the tool to replace the value for ``DJANGO_SETTINGS_MODULE`` with
-    ``portfolio.prod_settings`` instead of the actual ``portfolio.settings``, but only if you run with the option
-    ``--set-alt`` like this:
+    If you want to skip an environment variable, simply don't set **alt_value** to anything (use ``alt_value=``)
+    and it won't be set on the app.
+    Note that this will not remove if its added already, but only skips it.
+
+    For example, this variable will be skipped:
+
+    .. code-block:: yaml
+
+        # Django settings module
+        # alt_value=
+        DJANGO_SETTINGS_MODULE=portfolio.settings
+
+    If you want to remove an existing environment variable, set **alt_value** to **-** (use ``alt_value=-``)
+    and it will be removed from the Heroku app.
+
+    In this example, this variable will be removed:
+
+    .. code-block:: yaml
+
+        # Django settings module
+        # alt_value=-
+        DJANGO_SETTINGS_MODULE=portfolio.settings
+
+    Any of these methods above will force the tool to replace/skip/remove ``DJANGO_SETTINGS_MODULE``
+    but only if you run with the option ``--set-alt`` like this:
 
     .. code-block:: bash
 

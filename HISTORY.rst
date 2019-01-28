@@ -2,6 +2,13 @@
 History
 =======
 
+0.5.1 (2019-01-27)
+------------------
+
+* allow skipping of env vars
+* allow removal of env vars
+* check for rate limit
+
 0.5.0 (2019-01-06)
 ------------------
 
@@ -9,13 +16,11 @@ History
 * Added --version/-v to check version
 * Minor improvements
 
-
 0.4.0 (2018-12-30)
 ------------------
 
 * Detect Heroku installation and issues and launch appropriate URLs in browser to guide user
 * Minor improvements
-
 
 0.3.0 (2018-12-29)
 ------------------
