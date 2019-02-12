@@ -162,7 +162,7 @@ Features
 
 * Dumping of all env vars from upstream Heroku for a specified app into a specified .env file.
 
-    Warning: Existing .env files in the same path will be replaced.
+    Warning: Existing .env files in the same path with the same name will be replaced.
     As usual, absolute/relative path to the .env file is needed, but if not provided, ``.env`` will be used as
     the default file name.
 
