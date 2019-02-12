@@ -9,7 +9,7 @@ from setuptools import setup, find_packages
 # Package meta-data.
 VERSION = '0.5.2'
 NAME = 'heroku.env'
-DESCRIPTION = "CLI tool to upload environment variables from local .env files to Heroku"
+DESCRIPTION = "CLI tool to manipulate environment variables on Heroku with local .env files"
 URL = 'https://github.com/viseshrp/heroku.env'
 EMAIL = 'viseshrprasad@gmail.com'
 AUTHOR = 'Visesh Prasad'
