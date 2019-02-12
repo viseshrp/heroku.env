@@ -2,18 +2,23 @@
 History
 =======
 
-0.5.2 (2019-02-12)
+0.5.3 (2019-02-12)
 ------------------
 
 * allow dumping of env vars
 * fixes for py2.x
 
-0.5.1 (2019-01-27)
+0.5.2 (2019-01-27)
 ------------------
 
 * allow skipping of env vars
 * allow removal of env vars
 * check for rate limit
+
+0.5.1 (2019-01-08)
+------------------
+
+* fixes
 
 0.5.0 (2019-01-06)
 ------------------
