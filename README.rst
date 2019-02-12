@@ -18,7 +18,7 @@ heroku.env
         :alt: Downloads
 
 
-Simple CLI tool to upload environment variables to Heroku from a .env file, through the Heroku API.
+CLI tool to manipulate environment variables on Heroku with local .env files, through the Heroku API.
 
 * GitHub: https://github.com/viseshrp/heroku.env
 * PyPI: https://pypi.python.org/pypi/heroku.env
@@ -159,6 +159,18 @@ Features
     .. code-block:: bash
 
         $ heroku.env --app swimming-briskly-123 --env-file dot.env --api-key a1b12c24-ab1d-123f-5678-1234b12a0a1b
+
+* Dumping of all env vars from upstream Heroku for a specified app into a specified .env file.
+
+    Warning: Existing .env files in the same path will be replaced.
+    As usual, absolute/relative path to the .env file is needed, but if not provided, ``.env`` will be used as
+    the default file name.
+
+    Examples:
+
+    .. code-block:: bash
+
+        $ heroku.env --dump --app swimming-briskly-123 --env-file dot.env
 
 
 See all options with:

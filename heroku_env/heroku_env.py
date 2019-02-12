@@ -18,6 +18,78 @@ from .exceptions import (
 )
 
 
+def raise_for_rate_limit(heroku_conn):
+    """
+    Check and raise if Heroku API rate limit has exceeded
+
+    :param heroku_conn: Heroku connection object
+    :return: None
+    """
+    if heroku_conn.ratelimit_remaining() < 1:
+        raise RateLimitExceededError("You have reached the maximum number of calls to Heroku"
+                                     " API for your key. Please try later.")
+
+
+def get_heroku_app(app_name):
+    """
+    Get Heroku configuration
+
+    :param app_name: The Heroku app.
+    :returns Heroku connection and app instance
+    """
+    try:
+        # key error isn't expected here since the CLI tool
+        # forces an API key before it reaches this point.
+        heroku_conn = heroku3.from_key(os.environ['HEROKU_API_KEY'])
+        app_instance = heroku_conn.apps()[app_name]
+    except requests.exceptions.HTTPError:
+        raise InvalidAPIKeyError("Please check your API key and try again.")
+    except KeyError:
+        raise InvalidHerokuAppError(
+            "We could not find a Heroku app named {} registered with your API key".format(app_name))
+
+    # check rate limit before hitting API
+    raise_for_rate_limit(heroku_conn)
+
+    return app_instance
+
+
+def write_env(env_dict, env_file):
+    """
+    Write config vars to file
+
+    :param env_dict: dict of config vars
+    :param env_file: output file
+    :return: was the write successful?
+    """
+    content = ["{}={}".format(k, v) for k, v in env_dict.items()]
+
+    try:
+        with open(env_file, 'w') as file:
+            file.write('\n'.join(content))
+        written = True
+    except IOError:
+        written = False
+
+    return written
+
+
+def dump_env(app_name, env_file):
+    """
+    Get and dump env vars from Heroku
+
+    :param app_name: The Heroku app.
+    :param env_file: Path to the env file.
+    :return: None
+    """
+    app_instance = get_heroku_app(app_name)
+
+    if write_env(app_instance.config().to_dict(), env_file):
+        click.echo("Config vars dumped successfully at {}".format(env_file))
+    else:
+        click.echo("Config vars dump failed. Please try again.")
+
+
 def update_config_vars(config_dict, app):
     """
     Use the Heroku API to update config vars
@@ -39,17 +111,6 @@ def upload_env(app_name, env_file, set_alt):
     :param set_alt: Flag to check if alternate values must be used.
     :return: None
     """
-    try:
-        # key error isn't expected here since the CLI tool
-        # forces an API key before it reaches this point.
-        heroku_conn = heroku3.from_key(os.environ['HEROKU_API_KEY'])
-        app_instance = heroku_conn.apps()[app_name]
-    except requests.exceptions.HTTPError:
-        raise InvalidAPIKeyError("Please check your API key and try again.")
-    except KeyError:
-        raise InvalidHerokuAppError(
-            "We could not find a Heroku app named {} registered with your API key".format(app_name))
-
     # init
     config_dict = {}
     use_alt = False
@@ -103,12 +164,8 @@ def upload_env(app_name, env_file, set_alt):
                 else:
                     click.echo("Skipping line : Not of the form key=value")
 
-    # check rate limit before hitting API
-    if heroku_conn.ratelimit_remaining() < 1:
-        raise RateLimitExceededError("You have reached the maximum number of calls to Heroku"
-                                     " API for your key. Please try later.")
-
     # update
+    app_instance = get_heroku_app(app_name)
     update_result = update_config_vars(config_dict, app_instance)
 
     if not update_result:

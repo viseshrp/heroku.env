@@ -11,7 +11,7 @@ import os
 import click
 import requests
 
-from heroku_env import __version__
+from . import __version__
 from .constants import (
     HEROKU_TROUBLESHOOT_URL,
     HEROKU_API_KEY_HELP_URL
@@ -21,7 +21,7 @@ from .exceptions import (
     InvalidHerokuAppError,
     InvalidAPIKeyError
 )
-from .heroku_env import upload_env
+from .heroku_env import upload_env, dump_env
 from .param_types import APIKeyParamType
 
 
@@ -64,10 +64,17 @@ from .param_types import APIKeyParamType
          " Specify the alternate value to use with 'alt_value=VALUE'"
          " in the line right before the actual env var you want to change."
 )
-def main(app, env_file, api_key, set_alt):
+@click.option(
+    '-d',
+    '--dump',
+    is_flag=True,
+    required=False,
+    help="Flag to dump config vars to a .env file."
+)
+def main(app, env_file, api_key, set_alt, dump):
     """
-    Simple CLI tool to upload environment variables to
-    Heroku from a .env file, through the Heroku API.
+    CLI tool to manipulate environment variables on Heroku
+    with local .env files, through the Heroku API.
 
     It is recommended for security purposes that you set API
     key as an environment variable like this:
@@ -85,7 +92,10 @@ def main(app, env_file, api_key, set_alt):
     if not os.getenv('HEROKU_API_KEY'):
         os.environ['HEROKU_API_KEY'] = api_key
     try:
-        upload_env(app, env_file, set_alt)
+        if dump:
+            dump_env(app, env_file)
+        else:
+            upload_env(app, env_file, set_alt)
     except IndexError:
         raise click.ClickException("The entries in your .env file are not of the form KEY=VALUE")
     except HerokuRunError as e:
