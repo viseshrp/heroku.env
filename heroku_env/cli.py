@@ -11,7 +11,7 @@ import os
 import click
 import requests
 
-from heroku_env import __version__
+from . import __version__
 from .constants import (
     HEROKU_TROUBLESHOOT_URL,
     HEROKU_API_KEY_HELP_URL

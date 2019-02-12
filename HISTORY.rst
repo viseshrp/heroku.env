@@ -6,6 +6,7 @@ History
 ------------------
 
 * allow dumping of env vars
+* fixes for py2.x
 
 0.5.1 (2019-01-27)
 ------------------
