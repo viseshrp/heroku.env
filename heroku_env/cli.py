@@ -19,7 +19,9 @@ from .constants import (
 from .exceptions import (
     HerokuRunError,
     InvalidHerokuAppError,
-    InvalidAPIKeyError
+    InvalidAPIKeyError,
+    EnvFileNotFoundError,
+    EnvFileNotWritableError
 )
 from .heroku_env import upload_env, dump_env
 from .param_types import APIKeyParamType
@@ -37,7 +39,7 @@ from .param_types import APIKeyParamType
 @click.option(
     '-e',
     '--env-file',
-    type=click.Path(exists=True, file_okay=True, dir_okay=False,
+    type=click.Path(exists=False, file_okay=True, dir_okay=False,
                     readable=True, resolve_path=True, allow_dash=False),
     default=".env",
     show_default=True,
@@ -108,7 +110,9 @@ def main(app, env_file, api_key, set_alt, dump):
         raise click.ClickException(e)
     except (
         HerokuRunError,
-        InvalidHerokuAppError
+        InvalidHerokuAppError,
+        EnvFileNotFoundError,
+        EnvFileNotWritableError
     ) as e:
         raise click.ClickException(e)
     except requests.exceptions.ConnectionError:
