@@ -8,7 +8,6 @@ import os
 
 import click
 import heroku3
-import requests
 
 from .exceptions import (
     HerokuRunError,
@@ -43,9 +42,13 @@ def get_heroku_app(app_name):
         # key error isn't expected here since the CLI tool
         # forces an API key before it reaches this point.
         heroku_conn = heroku3.from_key(os.environ['HEROKU_API_KEY'])
+
+        # check and fail early
+        if not heroku_conn.is_authenticated:
+            raise InvalidAPIKeyError("Please check your API key and try again.")
+
+        # get app
         app_instance = heroku_conn.apps()[app_name]
-    except requests.exceptions.HTTPError:
-        raise InvalidAPIKeyError("Please check your API key and try again.")
     except KeyError:
         raise InvalidHerokuAppError(
             "We could not find a Heroku app named {} registered with your API key.".format(app_name))

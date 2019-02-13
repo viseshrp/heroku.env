@@ -7,14 +7,14 @@ import io
 from setuptools import setup, find_packages
 
 # Package meta-data.
-VERSION = '0.5.4'
+VERSION = '0.5.5'
 NAME = 'heroku.env'
 DESCRIPTION = "CLI tool to manipulate environment variables on Heroku with local .env files"
 URL = 'https://github.com/viseshrp/heroku.env'
 EMAIL = 'viseshrprasad@gmail.com'
 AUTHOR = 'Visesh Prasad'
 REQUIRES_PYTHON = ">=2.7"
-REQUIREMENTS = ['future>=0.15.2', 'Click>=6.0', 'requests>=1.2.3',
+REQUIREMENTS = ['future>=0.15.2', 'Click>=6.0',
                 'heroku3>=3.4.0', 'colorama>=0.4.1']
 SETUP_REQUIREMENTS = ['pytest-runner', ]
 TEST_REQUIREMENTS = ['pytest', ]
