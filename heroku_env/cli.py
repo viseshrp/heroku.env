@@ -26,6 +26,8 @@ from .exceptions import (
 from .heroku_env import upload_env, dump_env
 from .param_types import APIKeyParamType
 
+click.disable_unicode_literals_warning = True
+
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
 @click.version_option(__version__, '-v', '--version')
@@ -103,18 +105,18 @@ def main(app, env_file, api_key, set_alt, dump):
     except HerokuRunError as e:
         # launch Heroku troubleshooting page for a failed run.
         click.launch(HEROKU_TROUBLESHOOT_URL)
-        raise click.ClickException(e)
+        raise click.ClickException(str(e))
     except InvalidAPIKeyError as e:
         # launch API key doc
         click.launch(HEROKU_API_KEY_HELP_URL)
-        raise click.ClickException(e)
+        raise click.ClickException(str(e))
     except (
         HerokuRunError,
         InvalidHerokuAppError,
         EnvFileNotFoundError,
         EnvFileNotWritableError
     ) as e:
-        raise click.ClickException(e)
+        raise click.ClickException(str(e))
     except requests.exceptions.ConnectionError:
         raise click.ClickException("Please check your internet connection and try again.")
     except Exception as e:
