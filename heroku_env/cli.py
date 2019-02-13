@@ -9,7 +9,6 @@ from __future__ import unicode_literals  # unicode support for py2
 import os
 
 import click
-import requests
 
 from . import __version__
 from .constants import (
@@ -117,8 +116,6 @@ def main(app, env_file, api_key, set_alt, dump):
         EnvFileNotWritableError
     ) as e:
         raise click.ClickException(str(e))
-    except requests.exceptions.ConnectionError:
-        raise click.ClickException("Please check your internet connection and try again.")
     except Exception as e:
         # all other exceptions
         click.echo(e)
