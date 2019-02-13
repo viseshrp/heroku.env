@@ -14,7 +14,9 @@ from .exceptions import (
     HerokuRunError,
     InvalidHerokuAppError,
     InvalidAPIKeyError,
-    RateLimitExceededError
+    RateLimitExceededError,
+    EnvFileNotFoundError,
+    EnvFileNotWritableError
 )
 
 
@@ -26,8 +28,8 @@ def raise_for_rate_limit(heroku_conn):
     :return: None
     """
     if heroku_conn.ratelimit_remaining() < 1:
-        raise RateLimitExceededError("You have reached the maximum number of calls to Heroku"
-                                     " API for your key. Please try later.")
+        raise RateLimitExceededError("Your API key has reached the maximum number of calls to Heroku."
+                                     " Please try later.")
 
 
 def get_heroku_app(app_name):
@@ -46,7 +48,7 @@ def get_heroku_app(app_name):
         raise InvalidAPIKeyError("Please check your API key and try again.")
     except KeyError:
         raise InvalidHerokuAppError(
-            "We could not find a Heroku app named {} registered with your API key".format(app_name))
+            "We could not find a Heroku app named {} registered with your API key.".format(app_name))
 
     # check rate limit before hitting API
     raise_for_rate_limit(heroku_conn)
@@ -82,10 +84,15 @@ def dump_env(app_name, env_file):
     :param env_file: Path to the env file.
     :return: None
     """
+    # check for write perms only if file already exists,
+    # otherwise we create one
+    if os.path.exists(env_file) and not os.access(env_file, os.W_OK):
+        raise EnvFileNotWritableError("File {} does not have write permissions.".format(env_file))
+
     app_instance = get_heroku_app(app_name)
 
     if write_env(app_instance.config().to_dict(), env_file):
-        click.echo("Config vars dumped successfully at {}".format(env_file))
+        click.echo("Config vars dumped successfully at {}.".format(env_file))
     else:
         click.echo("Config vars dump failed. Please try again.")
 
@@ -102,14 +109,13 @@ def update_config_vars(config_dict, app):
     return updated_config.to_dict()
 
 
-def upload_env(app_name, env_file, set_alt):
+def read_env(env_file, set_alt):
     """
-    Get and upload env vars to Heroku
+    Read config vars from file
 
-    :param app_name: The Heroku app.
-    :param env_file: Path to the env file.
+    :param env_file: output file
     :param set_alt: Flag to check if alternate values must be used.
-    :return: None
+    :return: dict of read config vars
     """
     # init
     config_dict = {}
@@ -162,14 +168,36 @@ def upload_env(app_name, env_file, set_alt):
                             click.secho(u'\u2713 ' + key, fg='green', bold=True)
 
                 else:
-                    click.echo("Skipping line : Not of the form key=value")
+                    click.echo("Skipping line : Not of the form key=value.")
 
-    # update
-    app_instance = get_heroku_app(app_name)
-    update_result = update_config_vars(config_dict, app_instance)
+    return config_dict
+
+
+def upload_env(app_name, env_file, set_alt):
+    """
+    Get and upload env vars to Heroku
+
+    :param app_name: The Heroku app.
+    :param env_file: Path to the env file.
+    :param set_alt: Flag to check if alternate values must be used.
+    :return: None
+    """
+    if not os.path.exists(env_file):
+        raise EnvFileNotFoundError("File {} does not exist.".format(env_file))
+
+    # read
+    config_dict = read_env(env_file, set_alt)
+
+    update_result = False
+    if config_dict:
+        # update
+        app_instance = get_heroku_app(app_name)
+        update_result = update_config_vars(config_dict, app_instance)
+    else:
+        click.echo("No env/config vars were found in file {}.".format(env_file))
 
     if not update_result:
         raise HerokuRunError("Failed to update env vars. Possibly an error with Heroku."
-                             " Please contact Heroku support.")
+                             " Please try again or contact Heroku support.")
 
     click.echo("Config vars updated successfully.")

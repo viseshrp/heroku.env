@@ -36,3 +36,19 @@ class RateLimitExceededError(HerokuEnvException):
     """
     Raised when the Heroku API rate limit has exceeded
     """
+
+
+class EnvFileNotFoundError(HerokuEnvException):
+    """
+    Raised when the specified env file path does not exist.
+    We check manually instead of using click.Path because
+    this is used for both upload and dump.
+    """
+
+
+class EnvFileNotWritableError(HerokuEnvException):
+    """
+    Raised when the specified env file does not have write perms.
+    We check manually instead of using click.Path because
+    this is used for both upload and dump.
+    """
