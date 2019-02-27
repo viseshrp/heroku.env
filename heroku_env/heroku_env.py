@@ -69,10 +69,10 @@ def write_env(env_dict, env_file):
     """
     content = ["{}={}".format(k, v) for k, v in env_dict.items()]
 
+    written = True
     try:
         with open(env_file, 'w') as file:
             file.write('\n'.join(content))
-        written = True
     except IOError:
         written = False
 
