@@ -20,6 +20,8 @@ heroku.env
 
 CLI tool to manipulate environment variables on Heroku with local .env files, through the Heroku API.
 
+Mentioned in the popular PyCoder's Weekly: https://pycoders.com/issues/357
+
 * GitHub: https://github.com/viseshrp/heroku.env
 * PyPI: https://pypi.python.org/pypi/heroku.env
 * Free software: MIT license
