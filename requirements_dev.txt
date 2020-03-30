@@ -7,7 +7,7 @@ tox==3.14.6
 coverage==5.0.4
 Sphinx==2.4.4
 twine==3.1.1
-readme_renderer[md]==24.0
+readme_renderer[md]==25.0
 
 pytest==4.6.2
 pytest-runner==5.1
