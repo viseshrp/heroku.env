@@ -10,4 +10,4 @@ twine==3.1.1
 readme_renderer[md]==25.0
 
 pytest==5.4.1
-pytest-runner==5.1
+pytest-runner==5.2
