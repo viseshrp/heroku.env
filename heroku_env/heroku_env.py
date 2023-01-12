@@ -11,7 +11,7 @@ from .exceptions import (
     RateLimitExceededError,
     EnvFileNotFoundError,
     EnvFileNotWritableError,
-    EnvFileEmptyError
+    EnvFileEmptyError,
 )
 
 

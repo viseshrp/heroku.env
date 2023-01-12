@@ -51,6 +51,7 @@ class EnvFileNotWritableError(HerokuEnvException):
     this is used for both upload and dump.
     """
 
+
 class EnvFileEmptyError(HerokuEnvException):
     """
     Raised when the specified env file is empty.

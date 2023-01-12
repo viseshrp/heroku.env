@@ -12,7 +12,7 @@ from .exceptions import (
     InvalidAPIKeyError,
     EnvFileNotFoundError,
     EnvFileNotWritableError,
-    EnvFileEmptyError
+    EnvFileEmptyError,
 )
 from .heroku_env import upload_env, dump_env
 from .param_types import APIKeyParamType
@@ -108,7 +108,7 @@ def main(app, env_file, api_key, set_alt, dump):
         InvalidHerokuAppError,
         EnvFileNotFoundError,
         EnvFileNotWritableError,
-        EnvFileEmptyError
+        EnvFileEmptyError,
     ) as e:
         raise click.ClickException(str(e))
     except Exception as e:
