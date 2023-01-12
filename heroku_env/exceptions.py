@@ -50,3 +50,8 @@ class EnvFileNotWritableError(HerokuEnvException):
     We check manually instead of using click.Path because
     this is used for both upload and dump.
     """
+
+class EnvFileEmptyError(HerokuEnvException):
+    """
+    Raised when the specified env file is empty.
+    """

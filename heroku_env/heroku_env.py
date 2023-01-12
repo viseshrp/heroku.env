@@ -11,6 +11,7 @@ from .exceptions import (
     RateLimitExceededError,
     EnvFileNotFoundError,
     EnvFileNotWritableError,
+    EnvFileEmptyError
 )
 
 
@@ -191,13 +192,12 @@ def upload_env(app_name, env_file, set_alt):
     # read
     config_dict = read_env(env_file, set_alt)
 
-    update_result = False
     if config_dict:
         # update
         app_instance = get_heroku_app(app_name)
         update_result = update_config_vars(config_dict, app_instance)
     else:
-        click.echo(f"No env/config vars were found in file {env_file}.")
+        raise EnvFileEmptyError(f"No env/config vars were found in file {env_file}.")
 
     if not update_result:
         raise HerokuRunError(
