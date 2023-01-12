@@ -2,6 +2,13 @@
 History
 =======
 
+0.6.0 (2023-01-11)
+------------------
+
+* drop Python2 support, support 3.7+
+* remove API key confirmation prompt
+* update dependencies
+
 0.5.5 (2019-02-13)
 ------------------
 
