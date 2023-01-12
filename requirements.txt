@@ -1,3 +1,0 @@
-Click>=6.0
-heroku3>=3.4.0
-colorama>=0.4.1

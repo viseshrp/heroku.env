@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Module containing the core functionality."""
-
-from __future__ import unicode_literals  # unicode support for py2
-
 import os
 
 import click
@@ -50,8 +45,7 @@ def get_heroku_app(app_name):
         # get app
         app_instance = heroku_conn.apps()[app_name]
     except KeyError:
-        raise InvalidHerokuAppError(
-            "We could not find a Heroku app named {} registered with your API key.".format(app_name))
+        raise InvalidHerokuAppError(f"We could not find a Heroku app named {app_name} registered with your API key.")
 
     # check rate limit before hitting API
     raise_for_rate_limit(heroku_conn)
@@ -67,7 +61,7 @@ def write_env(env_dict, env_file):
     :param env_file: output file
     :return: was the write successful?
     """
-    content = ["{}={}".format(k, v) for k, v in env_dict.items()]
+    content = [f"{k}={v}" for k, v in env_dict.items()]
 
     written = True
     try:
@@ -90,12 +84,12 @@ def dump_env(app_name, env_file):
     # check for write perms only if file already exists,
     # otherwise we create one
     if os.path.exists(env_file) and not os.access(env_file, os.W_OK):
-        raise EnvFileNotWritableError("File {} does not have write permissions.".format(env_file))
+        raise EnvFileNotWritableError(f"File {env_file} does not have write permissions.")
 
     app_instance = get_heroku_app(app_name)
 
     if write_env(app_instance.config().to_dict(), env_file):
-        click.echo("Config vars dumped successfully at {}.".format(env_file))
+        click.echo(f"Config vars dumped successfully at {env_file}.")
     else:
         click.echo("Config vars dump failed. Please try again.")
 
@@ -149,7 +143,7 @@ def read_env(env_file, set_alt):
 
                         if use_alt:
                             if alt_value == '':
-                                # skip the value if its an empty string
+                                # skip the value if it's an empty string
                                 continue
                             elif alt_value == '-':
                                 # set to None if alt_value is '-'
@@ -186,7 +180,7 @@ def upload_env(app_name, env_file, set_alt):
     :return: None
     """
     if not os.path.exists(env_file):
-        raise EnvFileNotFoundError("File {} does not exist.".format(env_file))
+        raise EnvFileNotFoundError(f"File {env_file} does not exist.")
 
     # read
     config_dict = read_env(env_file, set_alt)
@@ -197,7 +191,7 @@ def upload_env(app_name, env_file, set_alt):
         app_instance = get_heroku_app(app_name)
         update_result = update_config_vars(config_dict, app_instance)
     else:
-        click.echo("No env/config vars were found in file {}.".format(env_file))
+        click.echo(f"No env/config vars were found in file {env_file}.")
 
     if not update_result:
         raise HerokuRunError("Failed to update env vars. Possibly an error with Heroku."

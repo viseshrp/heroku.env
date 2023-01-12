@@ -1,67 +1,72 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """The setup script."""
-import io
+import os
+from io import open
 
 from setuptools import setup, find_packages
 
-# Package meta-data.
-VERSION = '0.5.5'
-NAME = 'heroku.env'
-DESCRIPTION = "CLI tool to manipulate environment variables on Heroku with local .env files"
-URL = 'https://github.com/viseshrp/heroku.env'
-EMAIL = 'viseshrprasad@gmail.com'
-AUTHOR = 'Visesh Prasad'
-REQUIRES_PYTHON = ">=2.7"
-REQUIREMENTS = ['future>=0.15.2', 'Click>=6.0',
+REQUIREMENTS = ['future>=0.15.2', 'Click>=8.0.0',
                 'heroku3>=3.4.0', 'colorama>=0.4.1']
-SETUP_REQUIREMENTS = ['pytest-runner', ]
-TEST_REQUIREMENTS = ['pytest', ]
 
-with io.open('README.rst', 'r', encoding='utf-8') as readme_file:
-    README = readme_file.read()
+curr_dir = os.path.abspath(os.path.dirname(__file__))
 
-with io.open('HISTORY.rst', 'r', encoding='utf-8') as history_file:
-    HISTORY = history_file.read()
+
+def get_file_text(file_name):
+    with open(os.path.join(curr_dir, file_name), "r", encoding="utf-8") as in_file:
+        return in_file.read()
+
+
+_version = {}
+_version_file = os.path.join(curr_dir, "heroku.env", "__init__.py")
+with open(_version_file) as fp:
+    exec(fp.read(), _version)
+version = _version["__version__"]
 
 setup(
-    name=NAME,
-    version=VERSION,
-    description=DESCRIPTION,
-    long_description=README + '\n\n' + HISTORY,
-    author=AUTHOR,
-    author_email=EMAIL,
-    url=URL,
-    packages=find_packages(include=['heroku_env']),
-    include_package_data=True,
+    name="heroku.env",
+    version=version,
+    description="CLI tool to manipulate environment variables on Heroku with local .env files",
+    long_description=get_file_text("README.rst")
+                     + "\n\n"
+                     + get_file_text("CHANGELOG.rst"),
+    long_description_content_type="text/x-rst",
+    author="Visesh Prasad",
+    author_email="visesh@live.com",
+    maintainer="Visesh Prasad",
+    maintainer_email="visesh@live.com",
     license="MIT license",
+    packages=find_packages(include=["heroku_env"]),
+    include_package_data=True,
+    zip_safe=False,
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Operating System :: OS Independent',
-        'Natural Language :: English',
-        "Programming Language :: Python :: 2",
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
+        "Development Status :: 4 - Beta",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
+    url="https://github.com/viseshrp/heroku.env",
+    project_urls={
+        "Documentation": "https://github.com/viseshrp/heroku.env",
+        "Changelog": "https://github.com/viseshrp/heroku.env/blob/main/CHANGELOG.rst",
+        "Bug Tracker": "https://github.com/viseshrp/heroku.env/issues",
+        "Source Code": "https://github.com/viseshrp/heroku.env",
+    },
+    python_requires=">=3.7",
+    keywords="heroku.env heroku env herokuenv heroku_env environment variables load",
+    test_suite="tests",
+    tests_require=[
+        "pytest",
+    ],
+    install_requires=REQUIREMENTS,
     entry_points={
-        'console_scripts': [
-            'heroku.env=heroku_env.__main__:main',
+        "console_scripts": [
+            "heroku.env=heroku_env.__main__:main",
         ],
     },
-    python_requires=REQUIRES_PYTHON,
-    install_requires=REQUIREMENTS,
-    keywords='heroku.env heroku env herokuenv heroku_env environment variables load',
-    setup_requires=SETUP_REQUIREMENTS,
-    test_suite='tests',
-    tests_require=TEST_REQUIREMENTS,
-    zip_safe=False,
 )

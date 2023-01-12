@@ -6,13 +6,6 @@ heroku.env
 .. image:: https://img.shields.io/pypi/v/heroku_env.svg
         :target: https://pypi.python.org/pypi/heroku.env
 
-.. image:: https://img.shields.io/travis/viseshrp/heroku_env.svg
-        :target: https://travis-ci.org/viseshrp/heroku.env
-
-.. image:: https://readthedocs.org/projects/herokuenv/badge/?version=latest
-        :target: https://herokuenv.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
 .. image:: https://pepy.tech/badge/heroku-env
         :target: https://pepy.tech/project/heroku-env
         :alt: Downloads
@@ -22,19 +15,8 @@ CLI tool to manipulate environment variables on Heroku with local .env files, th
 
 Mentioned in the popular PyCoder's Weekly: https://pycoders.com/issues/357
 
-* GitHub: https://github.com/viseshrp/heroku.env
-* PyPI: https://pypi.python.org/pypi/heroku.env
-* Free software: MIT license
-* Documentation: https://herokuenv.readthedocs.io.
-
-Disclaimer
-----------
-
-This library was a quick personal project because we use Heroku a lot at work and I find it really annoying
+This library was a quick personal project because we used to use Heroku a lot at work and I find it really annoying
 when you have to add env vars manually from your local environment every time.
-This is also my first venture into open source Python and my very first library on PyPI.
-If you're a rockstar dev reading this, I cannot be happier
-and I cannot tell you how much your feedback would mean to me :) Thanks.
 
 Installation
 ------------
@@ -46,7 +28,7 @@ Installation
 Requirements
 ------------
 
-#. Python 2.7+
+#. Python 3.7+
 #. Your Heroku API key (found `here`_ or by running `this`_), for the Heroku API to run and authenticate you.
 #. A valid Heroku app name is required to run against.
 #. The absolute/relative path to the .env file is also needed, but if not provided, ``.env`` will be used as the default file name, which expects a file named ``.env`` to be present in the current working directory.
@@ -185,13 +167,10 @@ See all options with:
 Credits
 -------
 
-* This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 * This is inspired by a script by `sdkcodes`_.
 * **martyzz1**, for the `heroku3`_ API wrapper.
 * `Click`_, for making writing CLI tools a complete pleasure.
 
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _audreyr/cookiecutter-pypackage: https://github.com/audreyr/cookiecutter-pypackage
 .. _sdkcodes: https://github.com/sdkcodes/heroku-config
 .. _here: https://dashboard.heroku.com/account
 .. _this: https://devcenter.heroku.com/articles/authentication#retrieving-the-api-token

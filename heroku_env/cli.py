@@ -1,10 +1,4 @@
-# -*- coding: utf-8 -*-
-
 """Console script for heroku.env"""
-
-# enable absolute imports of this module for Python2.x
-from __future__ import absolute_import
-from __future__ import unicode_literals  # unicode support for py2
 
 import os
 
@@ -24,8 +18,6 @@ from .exceptions import (
 )
 from .heroku_env import upload_env, dump_env
 from .param_types import APIKeyParamType
-
-click.disable_unicode_literals_warning = True
 
 
 @click.command(context_settings=dict(help_option_names=['-h', '--help']))
