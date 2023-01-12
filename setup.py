@@ -4,7 +4,7 @@ from io import open
 
 from setuptools import setup, find_packages
 
-REQUIREMENTS = ["future>=0.15.2", "Click>=8.0.0", "heroku3>=3.4.0", "colorama>=0.4.1"]
+REQUIREMENTS = ["Click>=8.1.1", "heroku3>=5.1.4", "colorama>=0.4.4"]
 
 curr_dir = os.path.abspath(os.path.dirname(__file__))
 
