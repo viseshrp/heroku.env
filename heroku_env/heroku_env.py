@@ -10,7 +10,7 @@ from .exceptions import (
     InvalidAPIKeyError,
     RateLimitExceededError,
     EnvFileNotFoundError,
-    EnvFileNotWritableError
+    EnvFileNotWritableError,
 )
 
 
@@ -22,8 +22,10 @@ def raise_for_rate_limit(heroku_conn):
     :return: None
     """
     if heroku_conn.ratelimit_remaining() < 1:
-        raise RateLimitExceededError("Your API key has reached the maximum number of calls to Heroku."
-                                     " Please try later.")
+        raise RateLimitExceededError(
+            "Your API key has reached the maximum number of calls to Heroku."
+            " Please try later."
+        )
 
 
 def get_heroku_app(app_name):
@@ -36,7 +38,7 @@ def get_heroku_app(app_name):
     try:
         # key error isn't expected here since the CLI tool
         # forces an API key before it reaches this point.
-        heroku_conn = heroku3.from_key(os.environ['HEROKU_API_KEY'])
+        heroku_conn = heroku3.from_key(os.environ["HEROKU_API_KEY"])
 
         # check and fail early
         if not heroku_conn.is_authenticated:
@@ -45,7 +47,9 @@ def get_heroku_app(app_name):
         # get app
         app_instance = heroku_conn.apps()[app_name]
     except KeyError:
-        raise InvalidHerokuAppError(f"We could not find a Heroku app named {app_name} registered with your API key.")
+        raise InvalidHerokuAppError(
+            f"We could not find a Heroku app named {app_name} registered with your API key."
+        )
 
     # check rate limit before hitting API
     raise_for_rate_limit(heroku_conn)
@@ -65,8 +69,8 @@ def write_env(env_dict, env_file):
 
     written = True
     try:
-        with open(env_file, 'w') as file:
-            file.write('\n'.join(content))
+        with open(env_file, "w") as file:
+            file.write("\n".join(content))
     except IOError:
         written = False
 
@@ -84,7 +88,9 @@ def dump_env(app_name, env_file):
     # check for write perms only if file already exists,
     # otherwise we create one
     if os.path.exists(env_file) and not os.access(env_file, os.W_OK):
-        raise EnvFileNotWritableError(f"File {env_file} does not have write permissions.")
+        raise EnvFileNotWritableError(
+            f"File {env_file} does not have write permissions."
+        )
 
     app_instance = get_heroku_app(app_name)
 
@@ -142,10 +148,10 @@ def read_env(env_file, set_alt):
                         key = kv_pair[0]
 
                         if use_alt:
-                            if alt_value == '':
+                            if alt_value == "":
                                 # skip the value if it's an empty string
                                 continue
-                            elif alt_value == '-':
+                            elif alt_value == "-":
                                 # set to None if alt_value is '-'
                                 # this allows removal of a config var.
                                 value = None
@@ -162,7 +168,7 @@ def read_env(env_file, set_alt):
                         if key:
                             config_dict[key] = value
                             # confirm
-                            click.secho(u'\u2713 ' + key, fg='green', bold=True)
+                            click.secho("\u2713 " + key, fg="green", bold=True)
 
                 else:
                     click.echo("Skipping line : Not of the form key=value.")
@@ -194,7 +200,9 @@ def upload_env(app_name, env_file, set_alt):
         click.echo(f"No env/config vars were found in file {env_file}.")
 
     if not update_result:
-        raise HerokuRunError("Failed to update env vars. Possibly an error with Heroku."
-                             " Please try again or contact Heroku support.")
+        raise HerokuRunError(
+            "Failed to update env vars. Possibly an error with Heroku."
+            " Please try again or contact Heroku support."
+        )
 
     click.echo("Config vars updated successfully.")
