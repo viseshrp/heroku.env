@@ -42,7 +42,7 @@ from .param_types import APIKeyParamType
     "--api-key",
     prompt="Please enter the Heroku API key to continue",
     hide_input=True,
-    confirmation_prompt=True,
+    confirmation_prompt=False,
     required=True,
     type=APIKeyParamType(),
     envvar="HEROKU_API_KEY",
