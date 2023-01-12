@@ -4,8 +4,7 @@ from io import open
 
 from setuptools import setup, find_packages
 
-REQUIREMENTS = ['future>=0.15.2', 'Click>=8.0.0',
-                'heroku3>=3.4.0', 'colorama>=0.4.1']
+REQUIREMENTS = ["future>=0.15.2", "Click>=8.0.0", "heroku3>=3.4.0", "colorama>=0.4.1"]
 
 curr_dir = os.path.abspath(os.path.dirname(__file__))
 
@@ -16,7 +15,7 @@ def get_file_text(file_name):
 
 
 _version = {}
-_version_file = os.path.join(curr_dir, "heroku.env", "__init__.py")
+_version_file = os.path.join(curr_dir, "heroku_env", "__init__.py")
 with open(_version_file) as fp:
     exec(fp.read(), _version)
 version = _version["__version__"]
@@ -26,8 +25,8 @@ setup(
     version=version,
     description="CLI tool to manipulate environment variables on Heroku with local .env files",
     long_description=get_file_text("README.rst")
-                     + "\n\n"
-                     + get_file_text("CHANGELOG.rst"),
+    + "\n\n"
+    + get_file_text("CHANGELOG.rst"),
     long_description_content_type="text/x-rst",
     author="Visesh Prasad",
     author_email="visesh@live.com",
